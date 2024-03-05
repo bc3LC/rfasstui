@@ -1,0 +1,104 @@
+
+body
+{
+	font-family:"Barlow Regular", Sans-Serif !important;
+	font-size: 20px;
+}
+
+.about-info
+{
+    font-size: 12px;
+}
+
+.c-emissions
+{
+    font-size: 14px;
+}
+
+.container {
+    position: relative;
+    width: 100%;
+}
+
+.header-text-title
+{
+    position: absolute;
+    color: #FFFFFF;
+    top: 40%;
+    left: 50%;
+    text-align: center;!important
+    max-width: 120px;
+    margin-right: -50%;
+    transform: translate(-50%, -50%)
+}
+
+.header-text-sub
+{
+    position: absolute;
+    color: #FFFFFF;
+    text-align: center;
+    font-size: 100%;
+    top: 60%;
+    left: 50%;
+    margin-right: -50%;
+    transform: translate(-50%, -50%)
+}
+
+.home-text
+{
+    font-size: 16px;
+}
+
+.hrNav
+{
+    font-size: 50px;
+    color: #327a38;
+	  border-top: 2px solid #327a38;
+}
+
+.logo
+{
+
+    position: absolute;
+    top: 1.25rem;
+    left: 1.5rem;
+    margin:20px;
+    padding:0px 8px;
+    width:7.5em;
+}
+
+.maps
+{
+    font-size: 16px;
+}
+
+.nav-tabs
+{
+    font-size: 14px;
+}
+
+.output-vars
+{
+    font-size: 16px;
+}
+
+.params
+{
+    font-size: 14px;
+}
+
+
+.fa-check
+{
+	color:#327a38;
+	padding:2px;
+	padding-right: 4px;
+}
+
+.fa-info
+{
+	color:#64ed7b;
+	padding:2px;
+	padding-right: 4px;
+}
+

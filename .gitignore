@@ -2,3 +2,6 @@
 .Rhistory
 .RData
 .Ruserdata
+
+# rfasst outputs
+inst/rfasstui/output/*
