@@ -1,0 +1,35 @@
+Package: rfasstui
+Type: Package
+Title: A web-based interactive scenario builder and visualization application for the rfasst model
+Version: 1.0
+Authors@R: c(person("Clàudia", "Rodés-Bachs", email = "claudia.rodes@bc3research.org", role = c("aut", "cre")),
+         person("Jon", "Sampedro", email = "jon.sampedro@bc3research.org", role = c("aut")))
+Description: Provides a simple visual, interactive web interface for the chemical source receptor model rfasst.
+License: BLD-2
+Encoding: UTF-8
+LazyData: true
+Imports:
+    remotes,
+    shiny,
+    shinyjs,
+    devtools,
+    dplyr,
+    ggplot2,
+    shinyalert,
+    shinyBS,
+    shinythemes,
+    shinyWidgets,
+    stringr,
+    shinycustomloader,
+    markdown
+Depends:
+    R (>= 3.6.0),
+    rfasst
+Suggests:
+    testthat (>= 2.1.0),
+    knitr,
+    rmarkdown,
+    pkgdown
+Remotes:
+RoxygenNote: 7.2.3
+VignetteBuilder: knitr

@@ -1,2 +1,2 @@
-# rfasst_ui
+# rfasstui
 User Interface for rfasst pkg
