@@ -10,10 +10,10 @@
 setGraphCapabilities <- function()
 {
   print('in set capabilities')
+
   tryCatch(
     {
-      outputVariables <<- input$capabilities
-      print(outputVariables)
+      outputVariables <<- input$graphVar
       if (length(outputVariables) < 4) cleanPlots()
       loadGraph()
     },
@@ -33,10 +33,10 @@ setGraphCapabilities <- function()
 setMapCapabilities <- function()
 {
   print('in set capabilities')
+
   tryCatch(
     {
       outputVariables <<- input$mapVar
-      print(outputVariables)
       if (length(outputVariables) < 1) cleanMap()
       loadMap()
     },
@@ -58,7 +58,7 @@ setMapCapabilities <- function()
 setSSP <- function(sspName)
 {
   print("in set SSP")
-  print(sspName)
+
   tryCatch(
     {
       # If scenario is checked then load it, otherwise unload it
@@ -75,8 +75,6 @@ setSSP <- function(sspName)
                        incProgress(1/1, detail = paste("Load complete."))
                        Sys.sleep(0.2)
                      })
-        print('end set SSP')
-        print(rfasst_scen[[sspName]])
       }
       else
       {

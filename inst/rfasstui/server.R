@@ -78,12 +78,46 @@ server <- function(input, output, session)
   observeEvent(input$input_SSP_3, setSSP("SSP-3"), ignoreInit = TRUE)
   observeEvent(input$input_SSP_4, setSSP("SSP-4"), ignoreInit = TRUE)
   observeEvent(input$input_SSP_5, setSSP("SSP-5"), ignoreInit = TRUE)
-  observeEvent(input$capabilities, setGraphCapabilities(), ignoreInit = FALSE)
-  observeEvent(input$mapVar, setMapCapabilities(), ignoreInit = FALSE)
+  observeEvent(input$graphVar, setGraphCapabilities(), ignoreInit = TRUE)
+  observeEvent(input$mapVar, setMapCapabilities(), ignoreInit = TRUE)
   observeEvent(input$loadGraphs, loadGraph(), ignoreInit = TRUE)
   observeEvent(input$loadMaps, loadMap(), ignoreInit = TRUE)
-
   observe({input$maps_year})
+
+  # Update graph and map variables when switching to these tabs
+  active_tab <- reactive({
+    if (input$nav == "Explore rfasst") {
+      if (grepl("Scenario Output", input$nav.explore_rfasst)) return("Scenario Output")
+      if (grepl("World Maps", input$nav.explore_rfasst)) return("World Maps")
+      return(NULL)
+    } else {
+      return(NULL)
+    }
+  })
+  observeEvent(active_tab(), {
+    if (!is.null(active_tab())) {
+      if (active_tab() == "Scenario Output") observeEvent(input$graphVar, setGraphCapabilities())
+      if (active_tab() == "World Maps") observeEvent(input$mapVar, setMapCapabilities())
+    }
+  })
+
+  # # Observer to reactively print the active tab
+  # observe({
+  #   if (!is.null(active_tab())) {
+  #     print(paste("In 'Explore rfasst',", active_tab(), "is active"))
+  #   }
+  # })
+
+  # observe({
+  #     if (input$nav.explore_rfasst == "Standard Scenarios") {
+  #       # Tab is active, perform actions here
+  #       print("The 'Standard Scenarios' tab is active")
+  #     }
+  #     if (input$nav.explore_rfasst == "Custom Scenarios") {
+  #       # Tab is not active
+  #       print("The 'Custom Scenarios' tab is active")
+  #     }
+  # })
 
   #----- End observer function setup
 

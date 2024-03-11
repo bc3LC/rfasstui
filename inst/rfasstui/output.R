@@ -51,8 +51,6 @@ cleanMap <- function()
 loadGraph <- function()
 {
   print("in load graph")
-  print(paste0('length of outputVariables: ', length(outputVariables)))
-  # save(rfasst_scen, file = 'rfasst_scen.RData')
 
   # Main loop that handles graph output based on number of scenarios and number of output variables
   if(length(rfasst_scen) > 0)
@@ -89,7 +87,6 @@ loadGraph <- function()
                # Create a new graph for each output variable
                for (i in 1:length(outputVariables))
                {
-                 print(paste0('display graph & buttons from i = ', i))
                  # Need local so that each item gets its own number. Without it, the value of i in the renderPlot() will be the same across all instances.
                  local(
                    {
@@ -206,18 +203,6 @@ loadMap <- function()
         shinyalert::shinyalert("Choose only one scenario to display the map", "Please set at one of the SSP scenarios to active or upload a custom emissions scenario.", type = "warning")
       }
 
-      if(length(outputVariables) < 1)
-      {
-        all_ok = FALSE
-        shinyalert::shinyalert("Invalid Input:", "Please choose one output variable.", type = "warning")
-      }
-      else if(length(rfasst_scen) > 1)
-      {
-        all_ok = FALSE
-        shinyalert::shinyalert("Invalid Input:", "Please choose only one output variable.", type = "warning")
-      }
-
-
       if (all_ok)
       {
         # This UI output variable is responsible for generating the 4 graphs in the output section.
@@ -255,7 +240,6 @@ loadMap <- function()
                            save(df, file = 'df.RData')
 
                            incProgress(1/2, detail = paste("Loading Map...\n"))
-                           print(paste0('title: ', attr(globalCapabilities[[outputVariables[[1]]]], 'longName'), ', ', user_year))
                            mapFigure <- computeMap(df, outputVariables[[1]],
                                                    paste0(attr(globalCapabilities[[outputVariables[[1]]]], 'longName'), ', ', user_year))
 

@@ -79,12 +79,6 @@ fluidPage(theme = shinythemes::shinytheme("readable"),
                            "Standard Scenarios",
                            h5("Share Socioeconomic Pathways"),
 
-                           # shinyWidgets::awesomeCheckboxGroup(inputId = "input_SSP",
-                           #                                    choices = c("SSP1", "SSP2", "SSP3", "SSP4", "SSP5"),
-                           #                                    inline = TRUE,
-                           #                                    status = "success",
-                           #                                    selected = "SSP2"),
-
                            shinyWidgets::prettyCheckbox(inputId = "input_SSP_1", label = "SSP1", value = FALSE, width = 60,
                                                         inline = TRUE, icon = icon("check"), animation = "jelly", status = "success"),
                            shinyWidgets::prettyCheckbox(inputId = "input_SSP_2", label = "SSP2", value = TRUE, width = 60,
@@ -110,20 +104,6 @@ fluidPage(theme = shinythemes::shinytheme("readable"),
 
                            chooseSliderSkin(skin = "Flat", color = "#327a38"),
 
-                           # h5("Model Scope"),
-                           # fluidRow(
-                           #   column(6,
-                           #          selectInput("input_paramToggle", label = NULL,
-                           #                      choices =  list("Premature deaths" = "default", "PM25 concentration" = "conc_pm25",
-                           #                                      "O3 concentration" = "conc_o3", "Relative yield loss"='crop_rel_yield_loss',
-                           #                                      "Crop production loss"='crop_prod_loss', "Crop revenue loss"='crop_rev_loss',
-                           #                                      "Economical damage (VSL)" = "econ_damage_vsl"))
-                           #   ),
-                           #   column(6,
-                           #          actionButton(inputId="reset_Params", label="Reset",
-                           #                       style = "background: #409948; color: white; padding:4px; display:center-align")
-                           #   ),
-                           # ),
                   ),
                   # Custom Scenarios Tab Panel
                   tabPanel
@@ -153,7 +133,7 @@ fluidPage(theme = shinythemes::shinytheme("readable"),
               mainPanel
               (width = 8,
                 tabsetPanel
-                (
+                (id = 'nav.explore_rfasst',
                   # Graphs Tab
                   tabPanel
                   (fixed = TRUE,
@@ -168,7 +148,7 @@ fluidPage(theme = shinythemes::shinytheme("readable"),
                           tags$td
                           (
                             selectInput
-                            ("capabilities",  "Choose Output Variables:",
+                            ("graphVar",  "Choose Output Variables:",
                               list('Pollutants concentration' = list("PM25"="concentration_pm25", "O3"="concentration_o3"),
                                    'Health impact' = list("Premature deaths due to PM25" = 'health_deaths_pm25', "Premature deaths due to O3" = 'health_deaths_o3', "Premature deaths Total" = 'health_deaths_total'),
                                    'Agricultural impact' = list("Relative yield loss"='agricultural_rel_yield_loss', "Production loss"='agricultural_prod_loss', "Revenue loss"='agricultural_rev_loss'), #TODO: consider Mi and AOT40 rel yield loss??
