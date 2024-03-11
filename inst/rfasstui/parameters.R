@@ -33,6 +33,7 @@ computeMap <- function(map_data, variable, map_title) {
                             shape = fasstSubset,
                             legendType = "pretty",
                             background  = T,
+                            save = F, animate = F,
                             title = map_title)
   }
   else if (variable == 'concentration_o3') {

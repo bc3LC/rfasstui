@@ -45,6 +45,7 @@ server <- function(input, output, session)
   rfasst_scen <- list() # list of selected scenarios
   outputVariables <- list() #list of the selected variables to be plotted in the Graph tab
   graphs_list <- list() # list of plots
+  last_map <- list()
 
   #----- End set up local vars
 
@@ -82,7 +83,7 @@ server <- function(input, output, session)
   observeEvent(input$mapVar, setMapCapabilities(), ignoreInit = TRUE)
   observeEvent(input$loadGraphs, loadGraph(), ignoreInit = TRUE)
   observeEvent(input$loadMaps, loadMap(), ignoreInit = TRUE)
-  observe({input$maps_year})
+  observeEvent(input$maps_year, loadMap(), ignoreInit = )
 
   # Update graph and map variables when switching to these tabs
   active_tab <- reactive({
@@ -100,24 +101,6 @@ server <- function(input, output, session)
       if (active_tab() == "World Maps") observeEvent(input$mapVar, setMapCapabilities())
     }
   })
-
-  # # Observer to reactively print the active tab
-  # observe({
-  #   if (!is.null(active_tab())) {
-  #     print(paste("In 'Explore rfasst',", active_tab(), "is active"))
-  #   }
-  # })
-
-  # observe({
-  #     if (input$nav.explore_rfasst == "Standard Scenarios") {
-  #       # Tab is active, perform actions here
-  #       print("The 'Standard Scenarios' tab is active")
-  #     }
-  #     if (input$nav.explore_rfasst == "Custom Scenarios") {
-  #       # Tab is not active
-  #       print("The 'Custom Scenarios' tab is active")
-  #     }
-  # })
 
   #----- End observer function setup
 

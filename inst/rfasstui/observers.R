@@ -38,7 +38,7 @@ setMapCapabilities <- function()
     {
       outputVariables <<- input$mapVar
       if (length(outputVariables) < 1) cleanMap()
-      loadMap()
+      # loadMap()
     },
     error = function(err)
     {

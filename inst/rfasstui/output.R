@@ -188,6 +188,7 @@ loadGraph <- function()
 loadMap <- function()
 {
   print('in load map')
+
   tryCatch(
     {
       # First check for selected scenarios and variables
@@ -230,17 +231,21 @@ loadMap <- function()
                            user_year <- input$maps_year
                            map_year <- ifelse(user_year == 2000, 2005, user_year)
 
-                           # Compute dataset to be plotted
-                           df_total <- computeOutput(rfasst_scen[1], outputVariables[[1]], regional = TRUE)
+                           # Compute dataset to be plotted. Skip the computation if it was the last one performed (and only the year has changed)
+                           if (length(last_map) > 0 && last_map[[1]] == paste0(rfasst_scen[1],'_',outputVariables[[1]])) {
+                             df_total = last_map[[1]]$data
+                           } else {
+                             df_total <- computeOutput(rfasst_scen[1], outputVariables[[1]], regional = TRUE)
+                             last_map[[1]] <<- paste0(rfasst_scen[1],'_',outputVariables[[1]])
+                             last_map[[1]]$data <<- df_total
+                           }
 
                            # Subset data to the user desired year. Since rfasst returns data from 2005, 2010, 2020, 2030 ... 2100,
                            # only these years are accepted, and if the user chose 2000, we print 2005 instead
-                           df <- df_total %>%
-                             dplyr::filter(year == map_year)
-                           save(df, file = 'df.RData')
-
                            incProgress(1/2, detail = paste("Loading Map...\n"))
-                           mapFigure <- computeMap(df, outputVariables[[1]],
+                           mapFigure <- computeMap(df_total%>%
+                                                     dplyr::filter(year == map_year),
+                                                   outputVariables[[1]],
                                                    paste0(attr(globalCapabilities[[outputVariables[[1]]]], 'longName'), ', ', user_year))
 
                            # Construct the map and add to the shiny output variable
@@ -255,14 +260,14 @@ loadMap <- function()
                              content = function(file) {
                                # save plot
                                ggplot2::ggsave(file,
-                                               plot = mapFigure$map_param_PRETTY, device = "png",
+                                               plot = mapFigure, device = "png",
                                                dpi = 150, limitsize = TRUE, width = 15, height = 10
                                )
                              }
                            )
 
                            incProgress(1/1, detail = "Map loaded.")
-                           Sys.sleep(0.25)
+                           # Sys.sleep(0.25)
                          })
           })
       }
