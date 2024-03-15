@@ -132,14 +132,14 @@ computeOutput <- function(prj_data = NULL, prj = NULL, variable, regional = FALS
     prj_scenario <- prj_data[[prj_name]]$scenario
     prj <- rgcam::loadProject(prj_path)
     scen <- rgcam::listScenarios(prj)
-    max_year <- 2050 # max(prj[[scen[1]]][['prices of all markets']]$year)
+    max_year <- max(prj[[scen[1]]][['ag production by crop type']][['year']])
     # if scenarios where selected, (in the case of the SSP example prj), plot only this ones
     if (!is.null(prj_scenario)) scen <- prj_scenario
   } else {
     scen <- rgcam::listScenarios(prj)
     # remote "data" from the scenario list
     scen <- scen[!grepl("data", scen)]
-    max_year <- 2050 # max(prj[[scen[1]]][['prices of all markets']]$year)
+    max_year <- max(prj[[scen[1]]][['ag production by crop type']][['year']])
   }
 
   if (variable == 'concentration_pm25') {
