@@ -17,6 +17,7 @@ computeMap <- function(map_data, variable, map_title) {
 
   print('in compute map')
   map_figure <- NULL
+  save(map_data, file = 'map_data.RData')
 
   if (variable == 'concentration_pm25') {
     print('in concentration_pm25')
@@ -26,8 +27,6 @@ computeMap <- function(map_data, variable, map_title) {
       dplyr::filter(subRegion != "RUE") %>%
       dplyr::mutate(units="ug/m3",
                     year=as.numeric(as.character(year)))
-
-    save(pm25.map, file = 'pm25.map.RData')
 
     map_figure <- rmap::map(data = pm25.map,
                             shape = fasstSubset,
@@ -145,7 +144,6 @@ computeOutput <- function(prj_data = NULL, prj = NULL, variable, regional = FALS
 
   if (variable == 'concentration_pm25') {
     print('in concentration_pm25')
-    print(prj_data)
     return_data <- lapply(scen, function(sc)
       rfasst::m2_get_conc_pm25(prj_name = if (!is.null(prj_data)) prj_data else 'dummy.dat',
                                prj = if (is.null(prj_data)) prj else NULL,
@@ -278,7 +276,6 @@ computeOutput <- function(prj_data = NULL, prj = NULL, variable, regional = FALS
           dplyr::ungroup()
         ) %>%
         dplyr::rowwise() %>%
-        dplyr::mutate(region = ifelse(regional, region, 'dummy_reg')) %>%
         dplyr::group_by(year, scenario, region) %>%
         dplyr::summarise(value = sum(value)) %>%
         dplyr::ungroup() %>%

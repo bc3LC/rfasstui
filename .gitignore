@@ -5,3 +5,6 @@
 
 # rfasst outputs
 inst/rfasstui/output*
+
+# extra files
+*extra*

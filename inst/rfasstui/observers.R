@@ -39,7 +39,6 @@ setMapCapabilities <- function()
     {
       outputVariables <<- input$mapVar
       if (length(outputVariables) < 1) cleanMap()
-      # loadMap()
     },
     error = function(err)
     {
@@ -105,10 +104,10 @@ loadCustomProject <- function() {
   customPrj <- input$input_custom_gcam_project
   print(customPrj)
 
+  all_ok <- TRUE
   # Avoid loading the project if it is currently loaded
   if (!is.null(loaded_prj) && loaded_prj$data == customPrj) {
     print('not loading existing prj')
-    return(loaded_prj)
   }
 
   print('loading prj')
@@ -116,7 +115,6 @@ loadCustomProject <- function() {
   if (is.null(input$input_custom_gcam_project) | (is.na(input$input_custom_gcam_project) | is.null(input$input_custom_gcam_project) | (input$input_custom_gcam_project == "")))
   {
     shinyalert::shinyalert("Missing Information", "Please name the scenario and load an emissions file before attempting to load the scenario.", type = "warning")
-    return(NULL)
   }
 
   # Load project
@@ -153,10 +151,10 @@ loadCustomProject <- function() {
       loaded_prj <<- prj
       loaded_prj[['data']] <<- customPrj
       print(loaded_prj[['data']])
-      return(prj)
     },
     warning = function(war)
     {
+      all_ok <- FALSE
       showModal(modalDialog(
         title = "Warning",
         paste("Details:  ",war
@@ -165,7 +163,39 @@ loadCustomProject <- function() {
     },
     error = function(err)
     {
+      all_ok <- FALSE
       shinyalert::shinyalert("Custom Project Error",print(paste('Error attempting to load custom project: ',err)), type = "error")
     })
+
+
+  # Render scenario selector
+  output$customScenarioSelector1 <- renderUI({
+    if (all_ok) {
+      selectInput(
+        inputId = "customScenMapSel",
+        label = "Select Scenarios:",
+        choices = sort(rgcam::listScenarios(prj), decreasing = F),
+        width = "400px",
+        multiple = T,
+        selected = sort(rgcam::listScenarios(prj), decreasing = F)[1]
+      )
+    } else {
+      NULL
+    }
+  })
+  output$customScenarioSelector2 <- renderUI({
+    if (all_ok) {
+      selectInput(
+        inputId = "customScenMapSel",
+        label = "Select Scenarios:",
+        choices = sort(rgcam::listScenarios(prj), decreasing = F),
+        width = "400px",
+        multiple = T,
+        selected = sort(rgcam::listScenarios(prj), decreasing = F)[1]
+      )
+    } else {
+      NULL
+    }
+  })
 
 }

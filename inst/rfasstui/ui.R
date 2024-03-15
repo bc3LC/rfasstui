@@ -125,9 +125,17 @@ fluidPage(theme = shinythemes::shinytheme("readable"),
                         downloadButton("downloadQueries", label = "Download queries file", icon = icon("download"))
                       ),
                       br(),
-                      div(
-                        fileInput("input_custom_gcam_project", "Upload Custom GCAM project:", width=275,
-                                  buttonLabel = "Choose Project", accept = c(".prj", ".dat", ".csv"))
+                      fluidRow(
+                        column(
+                          width = 8,
+                          fileInput("input_custom_gcam_project", "Upload Custom GCAM project:", width = "100%",
+                                    buttonLabel = "Choose Project", accept = c(".prj", ".dat", ".csv"))
+                        ),
+                        column(
+                          width = 4,
+                          actionButton(inputId = "input_load_gcam_project", label = "Load Project", width = "100%",
+                                       style = "margin-top: 0.625cm;")
+                        )
                       )
                     ) # End Div
                   ) # End Custom Scenarios Tab Panel
@@ -161,6 +169,7 @@ fluidPage(theme = shinythemes::shinytheme("readable"),
                           ),
                         )
                       ),
+                      uiOutput("customScenarioSelector1"),
                       actionButton(inputId="loadGraphs", label="Load Graphs", width = '200px', style = "background: #409948; color: white;"),
                       br(),
                       br(),
@@ -185,26 +194,7 @@ fluidPage(theme = shinythemes::shinytheme("readable"),
                       column(9, sliderInput("maps_year", "Map year", min = 2000, max = 2100, value = 2020, step = 10, post = "", width = "90%")
                       )
                     ),
-                    # tags$table(
-                    #   tags$tr(width = "100%",
-                    #           tags$td(shinyWidgets::prettyCheckbox(inputId = "input_map_filter", label = "Filter by Lat/Lon", value = FALSE,  inline = TRUE, icon = icon("check"))
-                    #           )
-                    #   ),
-                    # ),
-                    conditionalPanel(condition = "input.input_map_filter == true",
-                                     tags$table(
-                                       tags$tr(width = "100%",
-                                               tags$td(align = "left", shiny::textInput(inputId = "input_lat_min", label = "Lat Min:", width = 65, value = 13)),
-                                               tags$td(width = 15),
-                                               tags$td(align = "left", shiny::textInput(inputId = "input_lat_max", label = "Lat Max:",  width = 65, value = 57)),
-                                               tags$td(width = 15),
-                                               tags$td(align = "left", shiny::textInput(inputId = "input_lon_min", label = "Lon Min:", width = 65, value = -135)),
-                                               tags$td(width = 15),
-                                               tags$td(align = "left", shiny::textInput(inputId = "input_lon_max", label = "Lon Max:", width = 65, value = -55)),
-                                               tags$td()
-                                       )
-                                     ),
-                    ),
+                    uiOutput("customScenarioSelector2"),
                     actionButton(inputId="loadMaps", label="Load Map", width = 150, style = "background: #0B3F8F; color: white;"),
                     downloadButton("downloadMap", label="Save Hi-Res Map", width = 150),
                     br(),

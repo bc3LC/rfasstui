@@ -59,6 +59,7 @@ server <- function(input, output, session)
   graphs_list <- list() # list of plots
   last_map <- list()
   scen_tab <- NULL # name of the scenarios active tab
+  fig_tab <- NULL # name of the figures active tab
   loaded_prj <- NULL # last uploaded custom project (itself)
 
   #----- End set up local vars
@@ -97,28 +98,38 @@ server <- function(input, output, session)
       return(NULL)
     }
   })
+  observeEvent(active_fig_tab(), {
+    if (!is.null(active_fig_tab())) {
+      if (active_fig_tab() == "Scenario Output") fig_tab <<- "scenario.output"
+      if (active_fig_tab() == "World Maps") fig_tab <<- "world.maps"
+      print(scen_tab)
+    } else fig_tab <<- NULL
+  })
+
 
   # Check active scenarios' tab
   active_scen_tab <- reactive({
     if (input$nav == "Explore rfasst") {
-      print('in active scen tab 1')
       if (grepl("Standard Scenarios", input$nav.scenarios_rfasst)) return("Standard Scenarios")
-      if (grepl("Custom Scenarios", input$nav.scenarios_rfasst)) return("Custom Scenarios")
+      else if (grepl("Custom Scenarios", input$nav.scenarios_rfasst)) return("Custom Scenarios")
       return(NULL)
     } else {
       return(NULL)
     }
   })
-
-  scen_tab <<- NULL
   observeEvent(active_scen_tab(), {
     if (!is.null(active_scen_tab())) {
-      print('in active scen tab 2')
-      if (active_scen_tab() == "Standard Scenarios") scen_tab <<- "standard.scenarios"
-      if (active_scen_tab() == "Custom Scenarios") scen_tab <<- "custom.scenarios"
+      if (active_scen_tab() == "Standard Scenarios") {
+        scen_tab <<- "standard.scenarios"
+        # Render scenario selector
+        output$customScenarioSelector1 <- renderUI({ NULL })
+        output$customScenarioSelectors <- renderUI({ NULL })
+      }
+      else if (active_scen_tab() == "Custom Scenarios") scen_tab <<- "custom.scenarios"
       print(scen_tab)
     } else scen_tab <<- NULL
   })
+
 
   observeEvent(input$launch_explorer, updateTabsetPanel(session, "nav", selected = "Explore rfasst"), ignoreInit = TRUE)
   observeEvent(input$input_SSP_1, setSSP("SSP-1"), ignoreInit = TRUE)
@@ -126,10 +137,11 @@ server <- function(input, output, session)
   observeEvent(input$input_SSP_3, setSSP("SSP-3"), ignoreInit = TRUE)
   observeEvent(input$input_SSP_4, setSSP("SSP-4"), ignoreInit = TRUE)
   observeEvent(input$input_SSP_5, setSSP("SSP-5"), ignoreInit = TRUE)
+  observeEvent(input$input_load_gcam_project, loadCustomProject(), ignoreInit = TRUE)
   observeEvent(input$graphVar, setGraphCapabilities(), ignoreInit = FALSE)
   observeEvent(input$loadGraphs, loadGraph(), ignoreInit = TRUE)
   observeEvent(input$loadMaps, {setMapCapabilities(); loadMap()}, ignoreInit = TRUE)
-  observeEvent(input$maps_year, loadMap(), ignoreInit = TRUE)
+  # observeEvent(input$maps_year, loadMap(), ignoreInit = TRUE)
 
   #----- End observer function setup
 
