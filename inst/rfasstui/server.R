@@ -55,10 +55,11 @@ server <- function(input, output, session)
 
   ggplot2::theme_set(ggplot2::theme_minimal())
   rfasst_scen <- list() # list of selected scenarios
-  outputVariables <- list() #list of the selected variables to be plotted in the Graph tab
+  outputVariables <- list() # list of the selected variables to be plotted in the Graph tab
   graphs_list <- list() # list of plots
   last_map <- list()
   scen_tab <- NULL # name of the scenarios active tab
+  loaded_prj <- NULL # last uploaded custom project (itself)
 
   #----- End set up local vars
 
@@ -130,13 +131,11 @@ server <- function(input, output, session)
   observeEvent(input$loadMaps, {setMapCapabilities(); loadMap()}, ignoreInit = TRUE)
   observeEvent(input$maps_year, loadMap(), ignoreInit = TRUE)
 
-
   #----- End observer function setup
 
 
 
   #----- Custom Functions
-
 
   # Function to download the queries file
   output$downloadQueries <- downloadHandler(
@@ -160,17 +159,6 @@ server <- function(input, output, session)
     },
     contentType = "application/zip"
   )
-
-  # Working!!
-  # output$downloadQueries <- downloadHandler(
-  #   filename = function() {
-  #     paste("rfasst_queries2", "xml", sep=".")
-  #   },
-  #   content = function(fname) {
-  #     xml_string <- as.character(queries_rfasst)
-  #     writeLines(xml_string, fname)
-  #   }
-  # )
 
   # # Renders feedback form
   # output$feedbackFrame <- renderUI({

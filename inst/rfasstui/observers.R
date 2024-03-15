@@ -102,16 +102,24 @@ setSSP <- function(sspName)
 loadCustomProject <- function() {
   print("in load custom")
 
+  customPrj <- input$input_custom_gcam_project
+  print(customPrj)
 
+  # Avoid loading the project if it is currently loaded
+  if (!is.null(loaded_prj) && loaded_prj$data == customPrj) {
+    print('not loading existing prj')
+    return(loaded_prj)
+  }
+
+  print('loading prj')
+  # Checks
   if (is.null(input$input_custom_gcam_project) | (is.na(input$input_custom_gcam_project) | is.null(input$input_custom_gcam_project) | (input$input_custom_gcam_project == "")))
   {
     shinyalert::shinyalert("Missing Information", "Please name the scenario and load an emissions file before attempting to load the scenario.", type = "warning")
     return(NULL)
   }
 
-  customPrj <- input$input_custom_gcam_project
-  print(customPrj)
-
+  # Load project
   tryCatch(
     {
       # Load scenario and custom emissions
@@ -142,6 +150,9 @@ loadCustomProject <- function() {
            incProgress(1/1, detail = paste("Check complete."))
            Sys.sleep(0.2)
          })
+      loaded_prj <<- prj
+      loaded_prj[['data']] <<- customPrj
+      print(loaded_prj[['data']])
       return(prj)
     },
     warning = function(war)

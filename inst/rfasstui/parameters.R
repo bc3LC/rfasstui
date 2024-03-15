@@ -138,6 +138,8 @@ computeOutput <- function(prj_data = NULL, prj = NULL, variable, regional = FALS
     if (!is.null(prj_scenario)) scen <- prj_scenario
   } else {
     scen <- rgcam::listScenarios(prj)
+    # remote "data" from the scenario list
+    scen <- scen[!grepl("data", scen)]
     max_year <- 2050 # max(prj[[scen[1]]][['prices of all markets']]$year)
   }
 
