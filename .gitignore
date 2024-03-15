@@ -4,4 +4,4 @@
 .Ruserdata
 
 # rfasst outputs
-inst/rfasstui/output/*
+inst/rfasstui/output*

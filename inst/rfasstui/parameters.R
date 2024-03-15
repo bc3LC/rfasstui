@@ -111,9 +111,10 @@ computeMap <- function(map_data, variable, map_title) {
 
 # Compute the desired output given a GCAM project
 
-#' Compute health, agricultural, or economic output
+#' Compute health, agricultural, or economic output. Define only prj_data or prj, but not both!
 #'
-#' @param prj_data
+#' @param prj_data standard scenario project data
+#' @param prj custom scenario loaded project
 #' @param variable desired output: concentration_pm25, concentration_o3,
 #' health_deaths_pm25, health_deaths_o3, health_deaths_total,
 #' agricultural_rel_yield_loss, TODO
@@ -122,23 +123,30 @@ computeMap <- function(map_data, variable, map_title) {
 #' @return dataset
 #' @importFrom magrittr %>%
 #' @export
-computeOutput <- function(prj_data, variable, regional = FALSE)
+computeOutput <- function(prj_data = NULL, prj = NULL, variable, regional = FALSE)
 {
   print('in compute output')
 
-  prj_name <- names(prj_data)
-  prj_path <- prj_data[[prj_name]]$path
-  prj_scenario <- prj_data[[prj_name]]$scenario
-  prj <- rgcam::loadProject(prj_path)
-  scen <- rgcam::listScenarios(prj)
-  max_year <- 2050 # max(prj[[scen[1]]][['prices of all markets']]$year)
-  # if scenarios where selected, (in the case of the SSP example prj), plot only this ones
-  if (!is.null(prj_scenario)) scen <- prj_scenario
+  if (!is.null(prj_data)) {
+    prj_name <- names(prj_data)
+    prj_path <- prj_data[[prj_name]]$path
+    prj_scenario <- prj_data[[prj_name]]$scenario
+    prj <- rgcam::loadProject(prj_path)
+    scen <- rgcam::listScenarios(prj)
+    max_year <- 2050 # max(prj[[scen[1]]][['prices of all markets']]$year)
+    # if scenarios where selected, (in the case of the SSP example prj), plot only this ones
+    if (!is.null(prj_scenario)) scen <- prj_scenario
+  } else {
+    scen <- rgcam::listScenarios(prj)
+    max_year <- 2050 # max(prj[[scen[1]]][['prices of all markets']]$year)
+  }
 
   if (variable == 'concentration_pm25') {
     print('in concentration_pm25')
+    print(prj_data)
     return_data <- lapply(scen, function(sc)
-      rfasst::m2_get_conc_pm25(prj_name = prj_path,
+      rfasst::m2_get_conc_pm25(prj_name = if (!is.null(prj_data)) prj_data else 'dummy.dat',
+                               prj = if (is.null(prj_data)) prj else NULL,
                                final_db_year = max_year,
                                scen_name = sc,
                                saveOutput = F,
@@ -163,7 +171,8 @@ computeOutput <- function(prj_data, variable, regional = FALSE)
   else if (variable == 'concentration_o3') {
     print('in concentration_o3')
     return_data <- lapply(scen, function(sc)
-      rfasst::m2_get_conc_o3(prj_name = prj_path,
+      rfasst::m2_get_conc_o3(prj_name = if (!is.null(prj_data)) prj_data else 'dummy.dat',
+                             prj = if (is.null(prj_data)) prj else NULL,
                              final_db_year = max_year,
                              scen_name = sc,
                              saveOutput = F,
@@ -188,7 +197,8 @@ computeOutput <- function(prj_data, variable, regional = FALSE)
   else if (variable == 'health_deaths_pm25') {
     print('in health_deaths_pm25')
     return_data <- lapply(scen, function(sc)
-      rfasst::m3_get_mort_pm25(prj_name = prj_path,
+      rfasst::m3_get_mort_pm25(prj_name = if (!is.null(prj_data)) prj_data else 'dummy.dat',
+                               prj = if (is.null(prj_data)) prj else NULL,
                                final_db_year = max_year,
                                scen_name = sc,
                                saveOutput = F,
@@ -213,7 +223,8 @@ computeOutput <- function(prj_data, variable, regional = FALSE)
   else if (variable == 'health_deaths_o3') {
     print('in health_deaths_o3')
     return_data <- lapply(scen, function(sc)
-      rfasst::m3_get_mort_o3(prj_name = prj_path,
+      rfasst::m3_get_mort_o3(prj_name = if (!is.null(prj_data)) prj_data else 'dummy.dat',
+                             prj = if (is.null(prj_data)) prj else NULL,
                              final_db_year = max_year,
                              scen_name = sc,
                              saveOutput = F,
@@ -239,7 +250,8 @@ computeOutput <- function(prj_data, variable, regional = FALSE)
     print('in health_deaths_total')
     return_data <- lapply(scen, function(sc)
       dplyr::bind_rows(
-        rfasst::m3_get_mort_pm25(prj_name = prj_path,
+        rfasst::m3_get_mort_pm25(prj_name = if (!is.null(prj_data)) prj_data else 'dummy.dat',
+                                 prj = if (is.null(prj_data)) prj else NULL,
                                  final_db_year = max_year,
                                  scen_name = sc,
                                  saveOutput = F,
@@ -250,7 +262,8 @@ computeOutput <- function(prj_data, variable, regional = FALSE)
           dplyr::group_by(year, scenario, region) %>%
           dplyr::summarise(value = sum(GBD)) %>%
           dplyr::ungroup(),
-        rfasst::m3_get_mort_o3(prj_name = prj_path,
+        rfasst::m3_get_mort_o3(prj_name = if (!is.null(prj_data)) prj_data else 'dummy.dat',
+                               prj = if (is.null(prj_data)) prj else NULL,
                                final_db_year = max_year,
                                scen_name = sc,
                                saveOutput = F,

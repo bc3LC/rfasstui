@@ -51,131 +51,259 @@ cleanMap <- function()
 loadGraph <- function()
 {
   print("in load graph")
+  print(scen_tab)
 
-  # Main loop that handles graph output based on number of scenarios and number of output variables
-  if(length(rfasst_scen) > 0)
-  {
-    # If length is 5 or more than they've chosen too many variables
-    if(length(outputVariables) < 5)
-    {
-      tryCatch(
+  if (!is.null(scen_tab)) {
+    ############################################################################
+    ## Standard scenarios
+    if (scen_tab == 'standard.scenarios') {
+      # Main loop that handles graph output based on number of scenarios and number of output variables
+      if(length(rfasst_scen) > 0)
+      {
+        # If length is 5 or more than they've chosen too many variables
+        if(length(outputVariables) < 5)
         {
-          if(length(rfasst_scen) >= 1)
+          tryCatch(
+            {
+              if(length(rfasst_scen) >= 1)
+              {
+                withProgress(message = 'Loading Output Graphs...\n', value = 0,
+                             {
+
+                               # This UI output variable is responsible for generating the 4 graphs in the output section.
+                               output$plots <- renderUI(
+                                 {
+                                   plot_output_list <- lapply(1:length(outputVariables), function(i)
+                                   {
+                                     plotname <- paste("plot", i, sep="")
+
+                                     tagList(
+                                       plotOutput(plotname, height = 500, width = '100%'),
+                                       downloadButton(paste0("download_graph", i), label = "Download graph"),
+                                       downloadButton(paste0("download_data", i), label = "Download data")
+                                     )
+                                   })
+
+                                   # Convert the list to a tagList - this is necessary for the list of items to display properly.
+                                   do.call(tagList, plot_output_list)
+                                 })
+
+
+                               # Create a new graph for each output variable
+                               for (i in 1:length(outputVariables))
+                               {
+                                 # Need local so that each item gets its own number. Without it, the value of i in the renderPlot() will be the same across all instances.
+                                 local(
+                                   {
+                                     my_i <- i
+                                     plotname <- paste("plot", my_i, sep="")
+
+                                     # Set up local variables for dealing with output data frames
+                                     df_total <- data.frame()
+
+                                     # Display all the considered scenarios
+                                     for (j in 1:length(rfasst_scen))
+                                     {
+                                       df_scenario <- computeOutput(prj_data = rfasst_scen[j], variable = outputVariables[[i]])
+                                       df_total <- rbind(df_total, df_scenario)
+                                     }
+
+                                     # Get the units for graph axis
+                                     x <- dplyr::distinct(df_total, units)
+                                     ggplotGraph <- ggplot2::ggplot(data=df_total, ggplot2::aes(x=year, y=value, group=scenario, color=scenario)) +
+                                       ggplot2::geom_line() +
+                                       ggplot2::labs(y=x[[1]], title = attr(globalCapabilities[[outputVariables[[i]]]], 'longName')) +
+                                       ggplot2::scale_color_manual(values = globalColorScales)
+
+                                     # Save the dataset and plot to a global list, graphs_list
+                                     graphs_list[[i]] <- outputVariables[[i]]
+                                     graphs_list[[i]]$graph <- get('ggplotGraph')
+                                     graphs_list[[i]]$data <- get('df_total')
+                                     assign("graphs_list", value = graphs_list, envir = .GlobalEnv)
+
+                                     # Construct the plots and add to the shiny output variable
+                                     output[[plotname]] <- renderPlot({
+                                       get('ggplotGraph')
+                                     })
+
+                                     # Display download graph button
+                                     output[[paste0("download_graph", my_i)]] <- downloadHandler(
+                                       filename = function() {
+                                         paste0("rfasst_", graphs_list[[my_i]], ".png")
+                                       },
+                                       content = function(file) {
+                                         # save plot
+                                         ggplot2::ggsave(file,
+                                                         plot = graphs_list[[my_i]]$graph, device = "png",
+                                                         dpi = 150, limitsize = TRUE, width = 15, height = 10
+                                         )
+                                       }
+                                     )
+
+                                     # Display download data button
+                                     output[[paste0("download_data", my_i)]] <- downloadHandler(
+                                       filename = function() {
+                                         paste0("rfasst_", graphs_list[[my_i]], ".csv")
+                                       },
+                                       content = function(file) {
+                                         # save data
+                                         write.csv(file = file,
+                                                   x = graphs_list[[my_i]]$data,
+                                                   row.names = F
+                                         )
+                                       }
+                                     )
+
+                                   })
+                                 incProgress(1/length(rfasst_scen), detail = paste(names(names(rfasst_scen)[i]), " loaded."))
+                                 Sys.sleep(0.25)
+                               }
+                             })
+              }
+              else
+              {
+                shinyalert::shinyalert("Invalid Input:", "Please choose at least one output variables.", type = "warning")
+              }
+
+            },
+            error = function(err)
+            {
+              # error handler picks up where error was generated
+              shinyalert::shinyalert("Error Detected:",print(paste('There was an error when attempting to load the graph:',err)), type = "error")
+            })
+        }
+        else
+        {
+          shinyalert::shinyalert("Invalid Input:", "Please choose no more than four output variables.", type = "warning")
+        }
+      }
+      else
+      {
+        shinyalert::shinyalert("No active scnearios", "Please set at least one of the SSP scenarios to active or upload a custom emissions scenario.", type = "warning")
+      }
+    }
+
+    ############################################################################
+    ## Custom scenarios
+    else if (scen_tab == 'custom.scenarios') {
+
+      prj <- loadCustomProject()
+      prj.scenarios <- rgcam::listScenarios(prj)
+
+      # Main loop that handles graph output based on number of scenarios and number of output variables
+      # If length is 5 or more than they've chosen too many variables
+      if(length(outputVariables) < 5)
+      {
+        tryCatch(
           {
             withProgress(message = 'Loading Output Graphs...\n', value = 0,
-             {
+                         {
 
-               # This UI output variable is responsible for generating the 4 graphs in the output section.
-               output$plots <- renderUI(
-                 {
-                   plot_output_list <- lapply(1:length(outputVariables), function(i)
-                   {
-                     plotname <- paste("plot", i, sep="")
+                           # This UI output variable is responsible for generating the 4 graphs in the output section.
+                           output$plots <- renderUI(
+                             {
+                               plot_output_list <- lapply(1:length(outputVariables), function(i)
+                               {
+                                 plotname <- paste("plot", i, sep="")
 
-                     tagList(
-                       plotOutput(plotname, height = 500, width = '100%'),
-                       downloadButton(paste0("download_graph", i), label = "Download graph"),
-                       downloadButton(paste0("download_data", i), label = "Download data")
-                     )
-                   })
+                                 tagList(
+                                   plotOutput(plotname, height = 500, width = '100%'),
+                                   downloadButton(paste0("download_graph", i), label = "Download graph"),
+                                   downloadButton(paste0("download_data", i), label = "Download data")
+                                 )
+                               })
 
-                   # Convert the list to a tagList - this is necessary for the list of items to display properly.
-                   do.call(tagList, plot_output_list)
-                 })
+                               # Convert the list to a tagList - this is necessary for the list of items to display properly.
+                               do.call(tagList, plot_output_list)
+                             })
 
 
-               # Create a new graph for each output variable
-               for (i in 1:length(outputVariables))
-               {
-                 # Need local so that each item gets its own number. Without it, the value of i in the renderPlot() will be the same across all instances.
-                 local(
-                   {
-                     my_i <- i
-                     plotname <- paste("plot", my_i, sep="")
+                           # Create a new graph for each output variable
+                           for (i in 1:length(outputVariables))
+                           {
+                             # Need local so that each item gets its own number. Without it, the value of i in the renderPlot() will be the same across all instances.
+                             local(
+                               {
+                                 my_i <- i
+                                 plotname <- paste("plot", my_i, sep="")
 
-                     # Set up local variables for dealing with output data frames
-                     df_total <- data.frame()
+                                 # Set up local variables for dealing with output data frames
+                                 df_total <- data.frame()
 
-                     # Display all the considered scenarios
-                     for (j in 1:length(rfasst_scen))
-                     {
-                       df_scenario <- computeOutput(rfasst_scen[j], outputVariables[[i]])
-                       df_total <- rbind(df_total, df_scenario)
-                     }
+                                 # Display all the considered scenarios
+                                 for (j in 1:length(prj.scenarios))
+                                 {
+                                   df_scenario <- computeOutput(prj = prj, variable = outputVariables[[i]])
+                                   df_total <- rbind(df_total, df_scenario)
+                                 }
 
-                     # Get the units for graph axis
-                     x <- dplyr::distinct(df_total, units)
-                     ggplotGraph <- ggplot2::ggplot(data=df_total, ggplot2::aes(x=year, y=value, group=scenario, color=scenario)) +
-                       ggplot2::geom_line() +
-                       ggplot2::labs(y=x[[1]], title = attr(globalCapabilities[[outputVariables[[i]]]], 'longName')) +
-                       ggplot2::scale_color_manual(values = globalColorScales)
+                                 # Get the units for graph axis
+                                 x <- dplyr::distinct(df_total, units)
+                                 ggplotGraph <- ggplot2::ggplot(data=df_total,
+                                                                ggplot2::aes(x=year, y=value, group=scenario, color=scenario)) +
+                                   ggplot2::geom_line() +
+                                   ggplot2::labs(y=x[[1]], title = attr(globalCapabilities[[outputVariables[[i]]]], 'longName')) +
+                                   ggplot2::scale_color_manual(values = globalCustomColorScales)
 
-                     # Save the dataset and plot to a global list, graphs_list
-                     graphs_list[[i]] <- outputVariables[[i]]
-                     graphs_list[[i]]$graph <- get('ggplotGraph')
-                     graphs_list[[i]]$data <- get('df_total')
-                     assign("graphs_list", value = graphs_list, envir = .GlobalEnv)
+                                 # Save the dataset and plot to a global list, graphs_list
+                                 graphs_list[[i]] <- outputVariables[[i]]
+                                 graphs_list[[i]]$graph <- get('ggplotGraph')
+                                 graphs_list[[i]]$data <- get('df_total')
+                                 assign("graphs_list", value = graphs_list, envir = .GlobalEnv)
 
-                     # Construct the plots and add to the shiny output variable
-                     output[[plotname]] <- renderPlot({
-                       get('ggplotGraph')
-                     })
+                                 # Construct the plots and add to the shiny output variable
+                                 output[[plotname]] <- renderPlot({
+                                   get('ggplotGraph')
+                                 })
 
-                     # Display download graph button
-                     output[[paste0("download_graph", my_i)]] <- downloadHandler(
-                       filename = function() {
-                         paste0("rfasst_", graphs_list[[my_i]], ".png")
-                       },
-                       content = function(file) {
-                         # save plot
-                         ggplot2::ggsave(file,
-                                         plot = graphs_list[[my_i]]$graph, device = "png",
-                                         dpi = 150, limitsize = TRUE, width = 15, height = 10
-                         )
-                       }
-                     )
+                                 # Display download graph button
+                                 output[[paste0("download_graph", my_i)]] <- downloadHandler(
+                                   filename = function() {
+                                     paste0("rfasst_", graphs_list[[my_i]], ".png")
+                                   },
+                                   content = function(file) {
+                                     # save plot
+                                     ggplot2::ggsave(file,
+                                                     plot = graphs_list[[my_i]]$graph, device = "png",
+                                                     dpi = 150, limitsize = TRUE, width = 15, height = 10
+                                     )
+                                   }
+                                 )
 
-                     # Display download data button
-                     output[[paste0("download_data", my_i)]] <- downloadHandler(
-                       filename = function() {
-                         paste0("rfasst_", graphs_list[[my_i]], ".csv")
-                       },
-                       content = function(file) {
-                         # save data
-                         write.csv(file = file,
-                                   x = graphs_list[[my_i]]$data,
-                                   row.names = F
-                         )
-                       }
-                     )
+                                 # Display download data button
+                                 output[[paste0("download_data", my_i)]] <- downloadHandler(
+                                   filename = function() {
+                                     paste0("rfasst_", graphs_list[[my_i]], ".csv")
+                                   },
+                                   content = function(file) {
+                                     # save data
+                                     write.csv(file = file,
+                                               x = graphs_list[[my_i]]$data,
+                                               row.names = F
+                                     )
+                                   }
+                                 )
 
-                   })
-                 incProgress(1/length(rfasst_scen), detail = paste(names(names(rfasst_scen)[i]), " loaded."))
-                 Sys.sleep(0.25)
-               }
-             })
-          }
-          else
+                               })
+                             incProgress(1/length(rfasst_scen), detail = paste(names(names(rfasst_scen)[i]), " loaded."))
+                             Sys.sleep(0.25)
+                           }
+                         })
+
+          },
+          error = function(err)
           {
-            shinyalert::shinyalert("Invalid Input:", "Please choose at least one output variables.", type = "warning")
-          }
+            # error handler picks up where error was generated
+            shinyalert::shinyalert("Error Detected:",print(paste('There was an error when attempting to load the graph:',err)), type = "error")
+          })
+      }
+      else
+      {
+        shinyalert::shinyalert("Invalid Input:", "Please choose no more than four output variables.", type = "warning")
+      }
+    }
+  }
 
-        },
-        error = function(err)
-        {
-          # error handler picks up where error was generated
-          shinyalert::shinyalert("Error Detected:",print(paste('There was an error when attempting to load the graph:',err)), type = "error")
-        })
-    }
-    else
-    {
-      shinyalert::shinyalert("Invalid Input:", "Please choose no more than four output variables.", type = "warning")
-    }
-  }
-  else
-  {
-    shinyalert::shinyalert("No active scnearios", "Please set at least one of the SSP scenarios to active or upload a custom emissions scenario.", type = "warning")
-  }
 }
 
 
@@ -235,7 +363,7 @@ loadMap <- function()
                            if (length(last_map) > 0 && last_map[[1]] == paste0(rfasst_scen[1],'_',outputVariables[[1]])) {
                              df_total = last_map[[1]]$data
                            } else {
-                             df_total <- computeOutput(rfasst_scen[1], outputVariables[[1]], regional = TRUE)
+                             df_total <- computeOutput(prj_data = rfasst_scen[1], variable = outputVariables[[1]], regional = TRUE)
                              last_map[[1]] <<- paste0(rfasst_scen[1],'_',outputVariables[[1]])
                              last_map[[1]]$data <<- df_total
                            }

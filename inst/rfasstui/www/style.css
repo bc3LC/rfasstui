@@ -5,6 +5,11 @@ body
 	font-size: 20px;
 }
 
+.no-number
+{
+    list-style-type: none;
+}
+
 .about-info
 {
     font-size: 12px;

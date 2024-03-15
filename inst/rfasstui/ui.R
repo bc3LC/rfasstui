@@ -75,6 +75,7 @@ fluidPage(theme = shinythemes::shinytheme("readable"),
               sidebarPanel(
                 width = 4,
                 tabsetPanel(
+                  id = 'nav.scenarios_rfasst',
                   tabPanel(class = "params",
                            "Standard Scenarios",
                            h5("Share Socioeconomic Pathways"),
@@ -118,16 +119,15 @@ fluidPage(theme = shinythemes::shinytheme("readable"),
                         tags$li("Download ", tags$a(href = "https://github.com/JGCRI/gcam-core", "GCAM")),
                         tags$li("Run your GCAM scenario/s"),
                         tags$li("Create your ", tags$a(href = "https://github.com/JGCRI/rgcam", "rgcam"), " project with the example queries below."),
-                        tags$li("Detailed step-by-step here") # TODO: add link
+                        tags$li(class = "no-number", "Detailed step-by-step here") # TODO: add link
                       ),
                       div(
-                        # a(h6("Download queries file"), href="style.css"),
                         downloadButton("downloadQueries", label = "Download queries file", icon = icon("download"))
                       ),
                       br(),
                       div(
-                        fileInput("input_custom_emissions_file", "Upload Custom Emissions File:", width=275,
-                                  buttonLabel = "Choose File", accept = c("text/csv", ".csv", "text/comma-separated-values,text/plain"))
+                        fileInput("input_custom_gcam_project", "Upload Custom GCAM project:", width=275,
+                                  buttonLabel = "Choose Project", accept = c(".prj", ".dat", ".csv"))
                       )
                     ) # End Div
                   ) # End Custom Scenarios Tab Panel

@@ -1,13 +1,20 @@
 # This file is the application controller
 setwd("~/GitHub/rfasstui/inst/rfasstui")
+options(shiny.maxRequestSize=30*1024^2)
 library(rfasstui)
 library(rfasst)
 
-# Global vars for scale colors
-#' @details \code{globalColorScales}: Scale colors
+# Global vars for scale colors for SSP scenarios
+#' @details \code{globalColorScales}: Scale colors for SSP scenarios
 #' @rdname constants
 #' @export
-globalColorScales <- get_globalColorScales()
+globalSSPColorScales <- get_globalSSPColorScales()
+
+# Global vars for scale colors for Custom scenarios
+#' @details \code{globalColorScales}: Scale colors for Custom scenarios
+#' @rdname constants
+#' @export
+globalCustomColorScales <- get_globalCustomColorScales()
 
 # Create master list of variable lookups for "capabilities" (output variables for graphing)
 #' @details \code{globalCapabilities} Capability string (internal name lookup/mapping) for rfasst output variables, organized by group
@@ -41,7 +48,6 @@ server <- function(input, output, session)
 
   # Load other source files
   source("parameters.R", local = TRUE)
-  source("core.R", local = TRUE)
   source("output.R", local = TRUE)
   source("observers.R", local = TRUE)
 
@@ -52,6 +58,7 @@ server <- function(input, output, session)
   outputVariables <- list() #list of the selected variables to be plotted in the Graph tab
   graphs_list <- list() # list of plots
   last_map <- list()
+  scen_tab <- NULL # name of the scenarios active tab
 
   #----- End set up local vars
 
@@ -79,6 +86,39 @@ server <- function(input, output, session)
 
   #----- Set up observer functions to catch user interaction on the input fields
 
+  # Check active figures' tab
+  active_fig_tab <- reactive({
+    if (input$nav == "Explore rfasst") {
+      if (grepl("Scenario Output", input$nav.explore_rfasst)) return("Scenario Output")
+      if (grepl("World Maps", input$nav.explore_rfasst)) return("World Maps")
+      return(NULL)
+    } else {
+      return(NULL)
+    }
+  })
+
+  # Check active scenarios' tab
+  active_scen_tab <- reactive({
+    if (input$nav == "Explore rfasst") {
+      print('in active scen tab 1')
+      if (grepl("Standard Scenarios", input$nav.scenarios_rfasst)) return("Standard Scenarios")
+      if (grepl("Custom Scenarios", input$nav.scenarios_rfasst)) return("Custom Scenarios")
+      return(NULL)
+    } else {
+      return(NULL)
+    }
+  })
+
+  scen_tab <<- NULL
+  observeEvent(active_scen_tab(), {
+    if (!is.null(active_scen_tab())) {
+      print('in active scen tab 2')
+      if (active_scen_tab() == "Standard Scenarios") scen_tab <<- "standard.scenarios"
+      if (active_scen_tab() == "Custom Scenarios") scen_tab <<- "custom.scenarios"
+      print(scen_tab)
+    } else scen_tab <<- NULL
+  })
+
   observeEvent(input$launch_explorer, updateTabsetPanel(session, "nav", selected = "Explore rfasst"), ignoreInit = TRUE)
   observeEvent(input$input_SSP_1, setSSP("SSP-1"), ignoreInit = TRUE)
   observeEvent(input$input_SSP_2, setSSP("SSP-2"), ignoreInit = FALSE)
@@ -86,27 +126,10 @@ server <- function(input, output, session)
   observeEvent(input$input_SSP_4, setSSP("SSP-4"), ignoreInit = TRUE)
   observeEvent(input$input_SSP_5, setSSP("SSP-5"), ignoreInit = TRUE)
   observeEvent(input$graphVar, setGraphCapabilities(), ignoreInit = FALSE)
-  # observeEvent(input$mapVar, setMapCapabilities(), ignoreInit = FALSE)
   observeEvent(input$loadGraphs, loadGraph(), ignoreInit = TRUE)
   observeEvent(input$loadMaps, {setMapCapabilities(); loadMap()}, ignoreInit = TRUE)
   observeEvent(input$maps_year, loadMap(), ignoreInit = TRUE)
 
-  # # Update graph and map variables when switching to these tabs
-  # active_tab <- reactive({
-  #   if (input$nav == "Explore rfasst") {
-  #     if (grepl("Scenario Output", input$nav.explore_rfasst)) return("Scenario Output")
-  #     if (grepl("World Maps", input$nav.explore_rfasst)) return("World Maps")
-  #     return(NULL)
-  #   } else {
-  #     return(NULL)
-  #   }
-  # })
-  # observeEvent(active_tab(), {
-  #   if (!is.null(active_tab())) {
-  #     if (active_tab() == "Scenario Output") observeEvent(input$graphVar, setGraphCapabilities())
-  #     if (active_tab() == "World Maps") observeEvent(input$mapVar, setMapCapabilities())
-  #   }
-  # })
 
   #----- End observer function setup
 

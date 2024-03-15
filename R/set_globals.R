@@ -14,17 +14,29 @@ get_queries <- function() {
 
 
 
-#' Global vars for scale colors
-#' @title get_globalColorScales
+#' Global vars for scale colors of SSP scenarios
+#' @title get_globalSSPColorScales
 #' @export
-get_globalColorScales <- function() {
+get_globalSSPColorScales <- function() {
 
-  globalColorScales <- vector()
-  globalColorScales <- c("GCAM_SSP1" = "#5DBFDE", "GCAM_SSP2" = "#5CB95C", "GCAM_SSP3" = "#FBAB33",
+  globalSSPColorScales <- vector()
+  globalSSPColorScales <- c("GCAM_SSP1" = "#5DBFDE", "GCAM_SSP2" = "#5CB95C", "GCAM_SSP3" = "#FBAB33",
                          "GCAM_SSP4" ="#D7534E", "GCAM_SSP5" ="#9E49D1")
 
+  return(globalSSPColorScales)
+}
 
-  return(globalColorScales)
+
+
+#' Global vars for scale colors of SSP scenarios
+#' @title get_globalSSPColorScales
+#' @export
+get_globalCustomColorScales <- function() {
+
+  globalCustomColorScales <- vector()
+  globalCustomColorScales <- c("#5DBFDE","#5CB95C","#FBAB33","#D7534E","#9E49D1")
+
+  return(globalCustomColorScales)
 }
 
 
