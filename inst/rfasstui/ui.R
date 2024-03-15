@@ -116,14 +116,18 @@ fluidPage(theme = shinythemes::shinytheme("readable"),
                       p("Steps to run your own scenario with custom emissions:"),
                       tags$ol(
                         tags$li("Download ", tags$a(href = "https://github.com/JGCRI/gcam-core", "GCAM")),
-                        tags$li("Install ", tags$a(href = "https://github.com/bc3LC/rfasst/", "rfasst")),
-                        tags$li("Run your GCAM scenario and rfasst"),
-                        tags$li("Upload the PM25 and O3 concentration")  #TODO: link it to a GCAM db
+                        tags$li("Run your GCAM scenario/s"),
+                        tags$li("Create your ", tags$a(href = "https://github.com/JGCRI/rgcam", "rgcam"), " project with the example queries below."),
+                        tags$li("Detailed step-by-step here") # TODO: add link
                       ),
                       div(
-                        fileInput("input_custom_emissions_file", "Upload Custom Emissions File:", width=275, buttonLabel = "Choose File", accept = c("text/csv", ".csv", "text/comma-separated-values,text/plain")),
-                        div(
-                          class="paramDivs", actionButton(inputId="input_load_concentrations", label="Compute impacts"))
+                        # a(h6("Download queries file"), href="style.css"),
+                        downloadButton("downloadQueries", label = "Download queries file", icon = icon("download"))
+                      ),
+                      br(),
+                      div(
+                        fileInput("input_custom_emissions_file", "Upload Custom Emissions File:", width=275,
+                                  buttonLabel = "Choose File", accept = c("text/csv", ".csv", "text/comma-separated-values,text/plain"))
                       )
                     ) # End Div
                   ) # End Custom Scenarios Tab Panel

@@ -15,7 +15,8 @@ setGraphCapabilities <- function()
     {
       outputVariables <<- input$graphVar
       if (length(outputVariables) < 4) cleanPlots()
-      loadGraph()
+      print(paste0('in set capabilities: ', outputVariables))
+      # loadGraph()
     },
     error = function(err)
     {

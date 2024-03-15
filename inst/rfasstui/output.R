@@ -1,5 +1,5 @@
 # This file handles anything output related (screen, file, etc)
-
+library(rfasst)
 
 #' Internal function used to clean up visual elements when the number of graph output variables changes
 #'

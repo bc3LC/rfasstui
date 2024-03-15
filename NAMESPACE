@@ -2,3 +2,4 @@
 
 export(get_globalCapabilities)
 export(get_globalColorScales)
+export(get_queries)

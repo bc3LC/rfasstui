@@ -1,3 +1,19 @@
+#' Upload the xml queries
+#' @title get_queries
+#' @export
+get_queries <- function() {
+  queries_rfasst <- xml2::read_xml(file.path("www","input","queries","queries_rfasst.xml"))
+  queries_rfasst_nonCO2 <- xml2::read_xml(file.path("www","input","queries","queries_rfasst_nonCO2.xml"))
+
+  queries <- list()
+  queries[["queries_rfasst"]] <- queries_rfasst
+  queries[["queries_rfasst_nonCO2"]] <- queries_rfasst_nonCO2
+
+  return(queries)
+}
+
+
+
 #' Global vars for scale colors
 #' @title get_globalColorScales
 #' @export

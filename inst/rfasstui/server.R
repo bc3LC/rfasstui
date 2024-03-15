@@ -1,7 +1,7 @@
 # This file is the application controller
-#
-# library(rfasstui)
-# library(rfasst)
+setwd("~/GitHub/rfasstui/inst/rfasstui")
+library(rfasstui)
+library(rfasst)
 
 # Global vars for scale colors
 #' @details \code{globalColorScales}: Scale colors
@@ -14,6 +14,12 @@ globalColorScales <- get_globalColorScales()
 #' @rdname constants
 #' @export
 globalCapabilities <- get_globalCapabilities()
+
+# List of queries to create an rfasst prj
+#' @details \code{globalQueries}: GCAM queries
+#' @rdname constants
+#' @export
+globalQueries <- get_queries()
 
 
 #' Main server/data processing function
@@ -79,34 +85,69 @@ server <- function(input, output, session)
   observeEvent(input$input_SSP_3, setSSP("SSP-3"), ignoreInit = TRUE)
   observeEvent(input$input_SSP_4, setSSP("SSP-4"), ignoreInit = TRUE)
   observeEvent(input$input_SSP_5, setSSP("SSP-5"), ignoreInit = TRUE)
-  observeEvent(input$graphVar, setGraphCapabilities(), ignoreInit = TRUE)
-  observeEvent(input$mapVar, setMapCapabilities(), ignoreInit = TRUE)
+  observeEvent(input$graphVar, setGraphCapabilities(), ignoreInit = FALSE)
+  # observeEvent(input$mapVar, setMapCapabilities(), ignoreInit = FALSE)
   observeEvent(input$loadGraphs, loadGraph(), ignoreInit = TRUE)
-  observeEvent(input$loadMaps, loadMap(), ignoreInit = TRUE)
-  observeEvent(input$maps_year, loadMap(), ignoreInit = )
+  observeEvent(input$loadMaps, {setMapCapabilities(); loadMap()}, ignoreInit = TRUE)
+  observeEvent(input$maps_year, loadMap(), ignoreInit = TRUE)
 
-  # Update graph and map variables when switching to these tabs
-  active_tab <- reactive({
-    if (input$nav == "Explore rfasst") {
-      if (grepl("Scenario Output", input$nav.explore_rfasst)) return("Scenario Output")
-      if (grepl("World Maps", input$nav.explore_rfasst)) return("World Maps")
-      return(NULL)
-    } else {
-      return(NULL)
-    }
-  })
-  observeEvent(active_tab(), {
-    if (!is.null(active_tab())) {
-      if (active_tab() == "Scenario Output") observeEvent(input$graphVar, setGraphCapabilities())
-      if (active_tab() == "World Maps") observeEvent(input$mapVar, setMapCapabilities())
-    }
-  })
+  # # Update graph and map variables when switching to these tabs
+  # active_tab <- reactive({
+  #   if (input$nav == "Explore rfasst") {
+  #     if (grepl("Scenario Output", input$nav.explore_rfasst)) return("Scenario Output")
+  #     if (grepl("World Maps", input$nav.explore_rfasst)) return("World Maps")
+  #     return(NULL)
+  #   } else {
+  #     return(NULL)
+  #   }
+  # })
+  # observeEvent(active_tab(), {
+  #   if (!is.null(active_tab())) {
+  #     if (active_tab() == "Scenario Output") observeEvent(input$graphVar, setGraphCapabilities())
+  #     if (active_tab() == "World Maps") observeEvent(input$mapVar, setMapCapabilities())
+  #   }
+  # })
 
   #----- End observer function setup
 
 
 
   #----- Custom Functions
+
+
+  # Function to download the queries file
+  output$downloadQueries <- downloadHandler(
+    filename = function() {
+      paste("rfasst_queries", "zip", sep=".")
+    },
+    content = function(fname) {
+      fs <- c()
+      tmpdir <- tempdir()
+      setwd(tempdir())
+
+      xml_string <- as.character(globalQueries$queries_rfasst)
+      writeLines(xml_string, 'queries_rfasst.xml')
+      fs <- c(fs, 'queries_rfasst.xml')
+
+      xml_string <- as.character(globalQueries$queries_rfasst_nonCO2)
+      writeLines(xml_string, 'queries_rfasst_nonCO2.xml')
+      fs <- c(fs, 'queries_rfasst_nonCO2.xml')
+
+      zip::zip(zipfile=fname, files=fs)
+    },
+    contentType = "application/zip"
+  )
+
+  # Working!!
+  # output$downloadQueries <- downloadHandler(
+  #   filename = function() {
+  #     paste("rfasst_queries2", "xml", sep=".")
+  #   },
+  #   content = function(fname) {
+  #     xml_string <- as.character(queries_rfasst)
+  #     writeLines(xml_string, fname)
+  #   }
+  # )
 
   # # Renders feedback form
   # output$feedbackFrame <- renderUI({
