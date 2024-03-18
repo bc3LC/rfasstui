@@ -380,8 +380,8 @@ loadMap <- function()
             # Need local so that each item gets its own number. Without it, the value of i in the renderPlot() will be the same across all instances.
             local(
               {
-                withProgress(message = 'Generating Map Data...\n', value = 0,
-                            {
+                withProgress(message = 'Generating Map Data...\n', value = 1/3,
+                             {
                               # Choose map year
                               user_year <- input$maps_year
                               map_year <- ifelse(user_year == 2000, 2005, user_year)
@@ -398,7 +398,7 @@ loadMap <- function()
                               # Subset data to the user desired scenarios & year. Since rfasst returns data from
                               # 2005, 2010, 2020, 2030 ... 2100, only these years are accepted, and if the user
                               # choose 2000, we print 2005 instead
-                              incProgress(1/2, detail = paste("Loading Map...\n"))
+                              incProgress(2/3, detail = paste("Loading Map...\n"))
                               mapFigure <- computeMap(df_total%>%
                                                         dplyr::filter(year == map_year) %>%
                                                         dplyr::filter(scenario %in% sel_scen),
@@ -424,7 +424,7 @@ loadMap <- function()
                                 }
                               )
 
-                              incProgress(1/1, detail = "Map loaded.")
+                              incProgress(3/3, detail = "Map loaded.")
                               # Sys.sleep(0.25)
                             })
               })
@@ -471,7 +471,7 @@ loadMap <- function()
             # Need local so that each item gets its own number. Without it, the value of i in the renderPlot() will be the same across all instances.
             local(
               {
-                withProgress(message = 'Generating Map Data...\n', value = 0,
+                withProgress(message = 'Generating Map Data...\n', value = 1/3,
                             {
                               # Choose map year
                               user_year <- input$maps_year
@@ -493,7 +493,7 @@ loadMap <- function()
 
                               # Subset data to the user desired year. Since rfasst returns data from 2005, 2010, 2020, 2030 ... 2100,
                               # only these years are accepted, and if the user chose 2000, we print 2005 instead
-                              incProgress(1/2, detail = paste("Loading Map...\n"))
+                              incProgress(2/3, detail = paste("Loading Map...\n"))
                               mapFigure <- computeMap(df_total%>%
                                                         dplyr::filter(year == map_year) %>%
                                                         dplyr::filter(scenario %in% sel_scen),
@@ -519,7 +519,7 @@ loadMap <- function()
                                 }
                               )
 
-                              incProgress(1/1, detail = "Map loaded.")
+                              incProgress(3/3, detail = "Map loaded.")
                               # Sys.sleep(0.25)
                             })
               })

@@ -70,7 +70,7 @@ setSSP <- function(sspName)
                        rfasst_scen[[sspName]]$path <<- path
                        rfasst_scen[[sspName]]$scenario <<- scenario
 
-                       incProgress(1/1, detail = paste("Load complete."))
+                       incProgress(2/2, detail = paste("Load complete."))
                        Sys.sleep(0.2)
                      })
       }
@@ -117,34 +117,33 @@ loadCustomProject <- function() {
   # Load project
   tryCatch(
     {
-      # Load scenario and custom emissions
-      withProgress(message = paste('Loading Custom Project ', customPrj$name, "...\n"), value = 1/2,
-         {
-          prj <- rgcam::loadProject(customPrj$datapath)
-          incProgress(1/1, detail = paste("Load complete."))
-          Sys.sleep(0.2)
-         })
+      withProgress(message = "Loading Custom Project ...",
+                   value = 1/2,
+                   {
+                     # Load scenario and custom emissions
+                     prj <- rgcam::loadProject(customPrj$datapath)
 
-      # Check required queries appear
-      withProgress(message = paste('Checking Custom Project ', customPrj$name, "...\n"), value = 1/2,
-         {
-            prj.queries <- rgcam::listQueries(prj)
-            req.queries <- c("ag production by crop type",
-                             "ag production by subsector (land use region)",
-                             "prices of all markets",
-                             "Ag Commodity Prices",
-                             "International Aviation emissions",
-                             "International Shipping emissions",
-                             "nonCO2 emissions by resource production",
-                             "nonCO2 emissions by sector (excluding resource production)")
+                     # Update progress message
+                     shiny::incProgress(2/2, "Checking Custom Project ...")
 
-            if (!all(req.queries %in% prj.queries)) {
-              shinyalert::shinyalert("Custom Project Error",print(paste('Error: the custom project does not contain the required queries')), type = "error")
-              return(NULL)
-            }
-           incProgress(1/1, detail = paste("Check complete."))
-           Sys.sleep(0.2)
-         })
+                     # Check required queries appear
+                     prj.queries <- rgcam::listQueries(prj)
+                     req.queries <- c("ag production by crop type",
+                                      "ag production by subsector (land use region)",
+                                      "prices of all markets",
+                                      "Ag Commodity Prices",
+                                      "International Aviation emissions",
+                                      "International Shipping emissions",
+                                      "nonCO2 emissions by resource production",
+                                      "nonCO2 emissions by sector (excluding resource production)")
+
+                     if (!all(req.queries %in% prj.queries)) {
+                       shinyalert::shinyalert("Custom Project Error",print(paste('Error: the custom project does not contain the required queries')), type = "error")
+                       return(NULL)
+                     }
+
+                     Sys.sleep(0.2)
+                   })
       loaded_prj <<- prj
       loaded_prj[['data']] <<- customPrj
     },
