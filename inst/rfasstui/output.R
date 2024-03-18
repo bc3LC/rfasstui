@@ -224,6 +224,7 @@ loadGraph <- function()
       if (all_ok) {
         prj <- loaded_prj
         sel_scen <- input$customScenMapSel1
+        max_year <- max(prj[[rgcam::listScenarios(prj)[1]]][['ag production by crop type']][['year']])
 
         # Main loop that handles graph output based on number of scenarios and number of output variables
         # If length is 5 or more than they've chosen too many variables
@@ -266,7 +267,8 @@ loadGraph <- function()
 
                                    # Display all the considered scenarios
                                    df_total <- computeOutput(prj = prj, variable = outputVariables[[i]]) %>%
-                                     dplyr::filter(scenario %in% sel_scen)
+                                     dplyr::filter(scenario %in% sel_scen) %>%
+                                     dplyr::filter(year <= max_year)
 
                                    # Get the units for graph axis
                                    x <- dplyr::distinct(df_total, units)

@@ -193,4 +193,12 @@ loadCustomProject <- function() {
     }
   })
 
+  # Update year slider if necessary
+  max_year <- max(prj[[rgcam::listScenarios(prj)[1]]][['ag production by crop type']][['year']])
+  updateSliderInput(session,
+                    "maps_year",
+                    max = max_year)
+
+
+
 }

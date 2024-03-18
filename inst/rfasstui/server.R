@@ -124,7 +124,14 @@ server <- function(input, output, session)
   })
   observeEvent(active_scen_tab(), {
     if (!is.null(active_scen_tab())) {
-      if (active_scen_tab() == "Standard Scenarios") scen_tab <<- "standard.scenarios"
+      if (active_scen_tab() == "Standard Scenarios") {
+        scen_tab <<- "standard.scenarios"
+        output$customScenarioSelector1 <- renderUI({ NULL })
+        output$customScenarioSelector2 <- renderUI({ NULL })
+        updateSliderInput(session,
+                          "maps_year",
+                          max = 2100)
+      }
       else if (active_scen_tab() == "Custom Scenarios") scen_tab <<- "custom.scenarios"
     } else scen_tab <<- NULL
   })
