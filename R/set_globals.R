@@ -93,10 +93,16 @@ get_globalCapabilities <- function() {
   globalCapabilities[['health_deaths_total']] <- 'health_deaths_total'
   attr(globalCapabilities[['health_deaths_total']], 'longName') <- "Total premature deaths"
 
-  # # "Agricultural impacts" TODO
-  # globalCapabilities[['agriculture']] <- c('Relative yield los', 'Production loss', 'Revenue loss')
-  # attr(globalCapabilities[['agriculture']], 'longName') <- "Agricultural impacts"
-  #
+  # "Agricultural impacts"
+  globalCapabilities[['agriculture_ryl_mi']] <- 'agriculture_ryl_mi'
+  attr(globalCapabilities[['agriculture_ryl_mi']], 'longName') <- "Agriculture relative yield loss"
+
+  globalCapabilities[['agriculture_prod_loss']] <- 'agriculture_prod_loss'
+  attr(globalCapabilities[['agriculture_prod_loss']], 'longName') <- "Agriculture production loss"
+
+  globalCapabilities[['agriculture_rev_loss']] <- 'agriculture_rev_loss'
+  attr(globalCapabilities[['agriculture_rev_loss']], 'longName') <- "Agriculture revenue loss"
+
   # # "Economic impacts" TODO
   # globalCapabilities[['economy']] <- c('VSL')
   # attr(globalCapabilities[['economy']], 'longName') <- "Economic imipacts"

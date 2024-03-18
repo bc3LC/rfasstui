@@ -76,57 +76,38 @@ computeMap <- function(map_data, variable, map_title) {
                   save = F,
                   title = map_title)
   }
-  else if (variable == 'health_deaths_pm25') {
-    print('in health_deaths_pm25')
+  else if (grepl('health', variable)) {
+    print('in health')
 
-    pm.yll.fin.map <- map_data %>%
+    health.map <- map_data %>%
       dplyr::rename(subRegion = region)%>%
       dplyr::filter(subRegion != "RUE") %>%
       dplyr::mutate(year = as.numeric(as.character(year)),
                     units = "Premature deaths")
 
-    map_figure <- rmap::map(data = pm.yll.fin.map,
+    map_figure <- rmap::map(data = health.map,
                   shape = fasstSubset,
                   legendType = "pretty",
                   background  = T,
                   save = F,
                   title = map_title)
   }
-  else if (variable == 'health_deaths_o3') {
-    print('in health_deaths_o3')
+  else if (grepl('agriculture', variable)) {
+    print('in agriculture')
 
-    o3.mort.map <- map_data %>%
+    ag.map <- map_data %>%
       dplyr::rename(subRegion = region)%>%
       dplyr::filter(subRegion != "RUE") %>%
-      dplyr::mutate(year = as.numeric(as.character(year)),
-                    units = "Premature deaths")
+      dplyr::mutate(year = as.numeric(as.character(year)))
 
-    map_figure <- rmap::map(data = o3.mort.map,
+    map_figure <- rmap::map(data = ag.ryl.map,
                   shape = fasstSubset,
+                  ncol = 2,
                   legendType = "pretty",
                   background  = T,
                   save = F,
                   title = map_title)
   }
-  else if (variable == 'health_deaths_total') {
-    print('in health_deaths_total')
-
-    tot.mort.map <- map_data %>%
-      dplyr::rename(subRegion = region)%>%
-      dplyr::filter(subRegion != "RUE") %>%
-      dplyr::mutate(year = as.numeric(as.character(year)),
-                    units = "Premature deaths")
-
-    map_figure <- rmap::map(data = tot.mort.map,
-                  shape = fasstSubset,
-                  legendType = "pretty",
-                  background  = T,
-                  save = F,
-                  title = map_title)
-
-  }
-
-
   return(map_figure)
 }
 
@@ -344,6 +325,90 @@ computeOutput <- function(prj_data = NULL, prj = NULL, variable, regional = FALS
         dplyr::ungroup() %>%
         dplyr::mutate(units = 'Number of premature deaths')
     )
+
+    # Bind all the datasets together
+    return_data <- dplyr::bind_rows(return_data)
+
+    # If necessary, remove the region column
+    if (!regional) {
+      return_data <- return_data %>%
+        dplyr::select(-region)
+    }
+  }
+  else if (variable == 'agriculture_ryl_mi') {
+    print('in agriculture_ryl_mi')
+    return_data <- lapply(scen, function(sc)
+      rfasst::m4_get_ryl_mi(prj_name = if (!is.null(prj_data)) prj_data else 'dummy.dat',
+                            prj = if (is.null(prj_data)) prj else NULL,
+                            final_db_year = max_year,
+                            scen_name = sc,
+                            saveOutput = F,
+                            map = F, anim = F) %>%
+        dplyr::mutate(scenario = sc) %>%
+        dplyr::rename(units = unit) %>%
+        dplyr::rowwise() %>%
+        dplyr::mutate(region = ifelse(regional, region, 'dummy_reg')) %>%
+        dplyr::group_by(year, units, pollutant, scenario, region) %>%
+        dplyr::summarise(value = sum(value)) %>%
+        dplyr::ungroup() %>%
+        dplyr::rename(class = pollutant) %>%
+        dplyr::mutate(class = gsub("M_", "", class)))
+
+    # Bind all the datasets together
+    return_data <- dplyr::bind_rows(return_data)
+
+    # If necessary, remove the region column
+    if (!regional) {
+      return_data <- return_data %>%
+        dplyr::select(-region)
+    }
+  }
+  else if (variable == 'agriculture_prod_loss') {
+    print('in agriculture_prod_loss')
+    return_data <- lapply(scen, function(sc)
+      rfasst::m4_get_prod_loss(prj_name = if (!is.null(prj_data)) prj_data else 'dummy.dat',
+                               prj = if (is.null(prj_data)) prj else NULL,
+                               final_db_year = max_year,
+                               scen_name = sc,
+                               saveOutput = F,
+                               map = F, anim = F) %>%
+        dplyr::mutate(scenario = sc) %>%
+        dplyr::rename(units = unit) %>%
+        dplyr::rowwise() %>%
+        dplyr::mutate(region = ifelse(regional, region, 'dummy_reg')) %>%
+        dplyr::group_by(year, units, pollutant, scenario, region) %>%
+        dplyr::summarise(value = sum(value)) %>%
+        dplyr::ungroup() %>%
+        dplyr::rename(class = pollutant) %>%
+        dplyr::mutate(class = gsub("M_", "", class)))
+
+    # Bind all the datasets together
+    return_data <- dplyr::bind_rows(return_data)
+
+    # If necessary, remove the region column
+    if (!regional) {
+      return_data <- return_data %>%
+        dplyr::select(-region)
+    }
+  }
+  else if (variable == 'agriculture_rev_loss') {
+    print('in agriculture_rev_loss')
+    return_data <- lapply(scen, function(sc)
+      rfasst::m4_get_rev_loss(prj_name = if (!is.null(prj_data)) prj_data else 'dummy.dat',
+                              prj = if (is.null(prj_data)) prj else NULL,
+                              final_db_year = max_year,
+                              scen_name = sc,
+                              saveOutput = F,
+                              map = F, anim = F) %>%
+        dplyr::mutate(scenario = sc) %>%
+        dplyr::rename(units = unit) %>%
+        dplyr::rowwise() %>%
+        dplyr::mutate(region = ifelse(regional, region, 'dummy_reg')) %>%
+        dplyr::group_by(year, units, pollutant, scenario, region) %>%
+        dplyr::summarise(value = sum(value)) %>%
+        dplyr::ungroup() %>%
+        dplyr::rename(class = pollutant) %>%
+        dplyr::mutate(class = gsub("M_", "", class)))
 
     # Bind all the datasets together
     return_data <- dplyr::bind_rows(return_data)

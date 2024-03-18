@@ -125,12 +125,22 @@ loadGraph <- function()
                                    df_total <- computeOutput(prj = prj, variable = outputVariables[[i]]) %>%
                                      dplyr::filter(scenario %in% sel_scen)
 
+                                   save(df_total, file = 'df_total.RData')
                                    # Get the units for graph axis
                                    x <- dplyr::distinct(df_total, units)
-                                   ggplotGraph <- ggplot2::ggplot(data=df_total, ggplot2::aes(x=year, y=value, group=scenario, color=scenario)) +
-                                     ggplot2::geom_line() +
-                                     ggplot2::labs(y=x[[1]], title = attr(globalCapabilities[[outputVariables[[i]]]], 'longName')) +
-                                     ggplot2::scale_color_manual(values = globalSSPColorScales)
+                                   if (grepl('agriculture', outputVariables[[i]])) {
+                                     ggplotGraph <- ggplot2::ggplot(data=df_total, ggplot2::aes(x=year, y=value, group=scenario, color=scenario)) +
+                                       ggplot2::geom_line() +
+                                       ggplot2::labs(y=x[[1]], title = attr(globalCapabilities[[outputVariables[[i]]]], 'longName')) +
+                                       ggplot2::scale_color_manual(values = globalSSPColorScales) +
+                                       # special case - consider four crops
+                                       ggplot2::facet_wrap(. ~ class, nrow = 2)
+                                   } else {
+                                     ggplotGraph <- ggplot2::ggplot(data=df_total, ggplot2::aes(x=year, y=value, group=scenario, color=scenario)) +
+                                       ggplot2::geom_line() +
+                                       ggplot2::labs(y=x[[1]], title = attr(globalCapabilities[[outputVariables[[i]]]], 'longName')) +
+                                       ggplot2::scale_color_manual(values = globalSSPColorScales)
+                                   }
 
                                    # Save the dataset and plot to a global list, graphs_list
                                    graphs_list[[i]] <- outputVariables[[i]]
