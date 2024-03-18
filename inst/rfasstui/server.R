@@ -148,6 +148,43 @@ server <- function(input, output, session)
 
   #----- Custom Functions
 
+  # Display code in Guides tab
+  output$console_code_rgcam <- renderPrint({
+    cat("remotes::install_github('JGCRI/rgcam', build_vignettes=TRUE)")
+  })
+  output$console_code_rfasstui <- renderPrint({
+    cat("remotes::install_github('bc3LC/rfasst')")
+  })
+  output$console_code_prj <- renderPrint({
+    cat("#### User inputs
+    prj_name <- 'name_of_the_project_you_will_create.dat'
+    db_path <- 'path/to/your/database/folder'
+    db_name <- 'name_of_your_database'
+    scenarios <- 'scenarios_names_vector, e.g. c('scen1', 'scen2')'
+    query_path <- 'path/to/your/queries/folder'
+
+    #### Code to produce the suitable rgcam project
+    # Set connexion
+    conn <- rgcam::localDBConn(db_path,db_name,migabble = FALSE)
+
+    # Add basic queries
+    queries <- 'queries_rfasst.xml'
+    prj <- rgcam::addScenario(conn,
+                              prj_name,
+                              scenarios,
+                              paste0(query_path,'/',queries),
+                              saveProj = F)
+
+
+    # Add nonCO2 query manually (it is too big to use the usual method)
+    prj <- rfasstui::fill_queries(prj, db_path, db_name, prj_name, scen_name,
+                                  query_path, query_file)
+
+    # Save the project
+    rgcam::saveProject(prj, file = file.path('output',prj_name))")
+  })
+
+
   # Function to download the queries file
   output$downloadQueries <- downloadHandler(
     filename = function() {

@@ -60,12 +60,52 @@ fluidPage(theme = shinythemes::shinytheme("readable"),
             ),
             tabPanel(
               "Guides",
-              mainPanel(
-                style="vertical-align: middle;",
-                h3("Ready to get started?",
-                   tags$a("View the Guide/Tutorial", href="", target="blank")), # TODO add link to youtube tutorial
-                br(),
-                HTML('<iframe width="560" height="315" src="https://www.youtube.com/embed/fBHXS7pjZcI" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>')
+              # Main Panel that holds the tabs for the Information section
+              mainPanel
+              (
+                width = 15,
+                class = "about-info",
+                tabsetPanel
+                (
+                  # Video Tab Panel
+                  tabPanel
+                  (
+                    p(icon("youtube", "fa-1x"), "rfasst Tutorial", value="videoTab"),
+                    style="vertical-align: middle;",
+                    h4("Ready to get started?",
+                      tags$a("View the Guide/Tutorial", href="", target="blank")), # TODO add link to youtube tutorial
+                    tags$hr(class="hrNav"),
+                    br(),
+                    HTML('<iframe width="560" height="315" src="https://www.youtube.com/embed/fBHXS7pjZcI" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>')
+                  ),
+
+                  # Project creation pannel
+                  tabPanel
+                  (
+                    p(icon("code", "fa-1x"), "rgcam Project Creation", value="prjCreationTab"),
+                    h4("How to create an rgcam project suitable for rfasst"),
+                    tags$hr(class="hrNav"),
+                    br(),
+                    h6('To generate an ',
+                    a("rgcam", href="https://github.com/JGCRI/rgcam", target="blank"),
+                    ' project suitable to run ',
+                    a("rfasst", href="https://github.com/bc3LC/rfasst", target="blank"),
+                    ' you can follow the instructions below:'),
+                    br(),
+
+                    tags$ol(
+                      class = "h7",
+                      tags$li("Run your ", a("GCAM", href="https://github.com/JGCRI/GCAM", target="blank"), " scenarios."),
+                      tags$li("Dowload ", a("R", href="https://www.r-project.org", target="blank"), " and install rgcam ", verbatimTextOutput("console_code_rgcam"), "and rfasstui ", verbatimTextOutput("console_code_rfasstui")),
+                      tags$li("Dowload ", a("this",
+                                            href="https://github.com/bc3LC/rfasstui/raw/main/inst/rfasstui/www/input/queries.zip",
+                                            download="queries.zip",
+                                            target="_blank"), " folder and unzip it."),
+                      tags$li("Run the following code indicating the database path and the queries files path:", verbatimTextOutput("console_code_prj"))
+                    )
+                  )
+
+                )
 
               )
             ),
