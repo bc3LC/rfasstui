@@ -51,7 +51,6 @@ cleanMap <- function()
 loadGraph <- function()
 {
   print("in load graph")
-  print(scen_tab)
 
   if (!is.null(scen_tab)) {
     ############################################################################

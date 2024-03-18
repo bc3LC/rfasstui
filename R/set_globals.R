@@ -57,6 +57,25 @@ get_globalCapabilities <- function() {
 
   globalCapabilities <- list()
 
+  # "Emissions"
+  globalCapabilities[['emissions_bc']] <- 'emissions_bc'
+  attr(globalCapabilities[['emissions_bc']], 'longName') <- "BC emissions"
+
+  globalCapabilities[['emissions_nh3']] <- 'emissions_nh3'
+  attr(globalCapabilities[['emissions_nh3']], 'longName') <- "NH3 emissions"
+
+  globalCapabilities[['emissions_nmvoc']] <- 'emissions_nmvoc'
+  attr(globalCapabilities[['emissions_nmvoc']], 'longName') <- "NMVOC emissions"
+
+  globalCapabilities[['emissions_nox']] <- 'emissions_nox'
+  attr(globalCapabilities[['emissions_nox']], 'longName') <- "NOx emissions"
+
+  globalCapabilities[['emissions_pom']] <- 'emissions_pom'
+  attr(globalCapabilities[['emissions_pom']], 'longName') <- "POM emissions"
+
+  globalCapabilities[['emissions_so2']] <- 'emissions_so2'
+  attr(globalCapabilities[['emissions_so2']], 'longName') <- "SO2 emissions"
+
   # "Concentrations"
   globalCapabilities[['concentration_pm25']] <- 'concentration_pm25'
   attr(globalCapabilities[['concentration_pm25']], 'longName') <- "PM25 concentration"

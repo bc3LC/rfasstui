@@ -201,7 +201,9 @@ fluidPage(theme = shinythemes::shinytheme("readable"),
                           (
                             selectInput
                             ("graphVar",  "Choose Output Variables:",
-                              list('Pollutants concentration' = list("PM25"="concentration_pm25", "O3"="concentration_o3"),
+                              list('Precursors emissions' = list('BC emissions'="emissions_bc",'NH3 emissions'="emissions_nh3",'NMVOC emissions'="emissions_nmvoc",
+                                                                 'NOx emissions'="emissions_nox",'POM emissions'="emissions_pom",'SO2 emissions'="emissions_so2"),
+                                   'Pollutants concentration' = list("PM25"="concentration_pm25", "O3"="concentration_o3"),
                                    'Health impact' = list("Premature deaths due to PM25" = 'health_deaths_pm25', "Premature deaths due to O3" = 'health_deaths_o3', "Premature deaths Total" = 'health_deaths_total'),
                                    'Agricultural impact' = list("Relative yield loss"='agricultural_rel_yield_loss', "Production loss"='agricultural_prod_loss', "Revenue loss"='agricultural_rev_loss'), #TODO: consider Mi and AOT40 rel yield loss??
                                    'Economic impact' = list("VSL"='economic_vsl')),
@@ -225,7 +227,9 @@ fluidPage(theme = shinythemes::shinytheme("readable"),
                     p("Please note that output variables need to be computed and can take several seconds to load. Due to this, maps will need to be refreshed manually after adding/removing any scenario."),
                     fluidRow(
                       column(3, selectInput(inputId = "mapVar", label = "Choose Variable:", selected = "tas", width = "400px",
-                                            choices = list('Pollutants concentration' = list("PM25"="concentration_pm25", "O3"="concentration_o3"),
+                                            choices = list('Precursors emissions' = list('BC emissions'="emissions_bc",'NH3 emissions'="emissions_nh3",'NMVOC emissions'="emissions_nmvoc",
+                                                                                         'NOx emissions'="emissions_nox",'POM emissions'="emissions_pom",'SO2 emissions'="emissions_so2"),
+                                                           'Pollutants concentration' = list("PM25"="concentration_pm25", "O3"="concentration_o3"),
                                                            'Health impact' = list("Premature deaths due to PM25" = 'health_deaths_pm25', "Premature deaths due to O3" = 'health_deaths_o3', "Premature deaths Total" = 'health_deaths_total'),
                                                            'Agricultural impact' = list("Relative yield loss"='agricultural_rel_yield_loss', "Production loss"='agricultural_prod_loss', "Revenue loss"='agricultural_rev_loss'), #TODO: consider Mi and AOT40 rel yield loss??
                                                            'Economic impact' = list("VSL"='economic_vsl')),

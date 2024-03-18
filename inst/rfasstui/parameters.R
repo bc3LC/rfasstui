@@ -5,7 +5,9 @@ library(magrittr)
 #' Compute health, agricultural, or economic map
 #'
 #' @param map_data dataset from rfasst
-#' @param variable desired output: concentration_pm25, concentration_o3,
+#' @param variable desired output:
+#' emissions_bc, emissions_nh3, emissions_nmvoc, emissions_nox, emissions_pom, emissions_so2
+#' concentration_pm25, concentration_o3,
 #' health_deaths_pm25, health_deaths_o3, health_deaths_total,
 #' agricultural_rel_yield_loss, TODO
 #' economic_vsl TODO
@@ -19,7 +21,30 @@ computeMap <- function(map_data, variable, map_title) {
   map_figure <- NULL
   save(map_data, file = 'map_data.RData')
 
-  if (variable == 'concentration_pm25') {
+  if (grepl('emissions', variable)) {
+    print('in emissions')
+
+    emiss.map <- map_data %>%
+      dplyr::rename(subRegion=region)%>%
+      dplyr::filter(subRegion != "RUE") %>%
+      dplyr::mutate(units="Gg",
+                    value=value*1E-6,
+                    year=as.numeric(as.character(year)))
+
+    # Filter the selected pollutant
+    poll <- strsplit(variable, "_")[[1]][2]
+    emiss.map <- emiss.map %>%
+      dplyr::filter(tolower(pollutant) == tolower(poll))
+
+    map_figure <- rmap::map(data = emiss.map,
+                            shape = fasstSubset,
+                            legendType = "pretty",
+                            background = T,
+                            save = F, animate = F,
+                            title = map_title)
+
+  }
+  else if (variable == 'concentration_pm25') {
     print('in concentration_pm25')
 
     pm25.map <- map_data %>%
@@ -114,7 +139,9 @@ computeMap <- function(map_data, variable, map_title) {
 #'
 #' @param prj_data standard scenario project data
 #' @param prj custom scenario loaded project
-#' @param variable desired output: concentration_pm25, concentration_o3,
+#' @param variable desired output:
+#' emissions_bc, emissions_nh3, emissions_nmvoc, emissions_nox, emissions_pom, emissions_so2
+#' concentration_pm25, concentration_o3,
 #' health_deaths_pm25, health_deaths_o3, health_deaths_total,
 #' agricultural_rel_yield_loss, TODO
 #' economic_vsl TODO
@@ -142,7 +169,43 @@ computeOutput <- function(prj_data = NULL, prj = NULL, variable, regional = FALS
     max_year <- max(prj[[scen[1]]][['ag production by crop type']][['year']])
   }
 
-  if (variable == 'concentration_pm25') {
+  if (grepl('emissions', variable)) {
+    print('in emissions')
+    return_data <- lapply(scen, function(sc)
+      dplyr::bind_rows(rfasst::m1_emissions_rescale(prj_name = if (!is.null(prj_data)) prj_data else 'dummy.dat',
+                                   prj = if (is.null(prj_data)) prj else NULL,
+                                   final_db_year = max_year,
+                                   scen_name = sc,
+                                   saveOutput = F,
+                                   map = F, anim = F)) %>%
+        dplyr::mutate(scenario = sc) %>%
+        dplyr::mutate(units = 'Gg') %>%
+        dplyr::rowwise() %>%
+        dplyr::mutate(region = dplyr::if_else(regional, region, 'dummy_reg')) %>%
+        dplyr::group_by(year, scenario, units, pollutant, region) %>%
+        dplyr::summarise(value = median(value)) %>%
+        dplyr::ungroup() %>%
+        dplyr::mutate(pollutant = dplyr::if_else(
+          pollutant == "NOX", "NOx", dplyr::if_else(
+          pollutant == "OM", "POM", dplyr::if_else(
+          pollutant == "VOC", "NMVOC", pollutant))))
+    )
+
+    # Bind all the datasets together
+    return_data <- dplyr::bind_rows(return_data)
+
+    # If necessary, remove the region column
+    if (!regional) {
+      return_data <- return_data %>%
+        dplyr::select(-region)
+    }
+
+    # Filter the selected pollutant
+    poll <- strsplit(variable, "_")[[1]][2]
+    return_data <- return_data %>%
+      dplyr::filter(tolower(pollutant) == tolower(poll))
+  }
+  else if (variable == 'concentration_pm25') {
     print('in concentration_pm25')
     return_data <- lapply(scen, function(sc)
       rfasst::m2_get_conc_pm25(prj_name = if (!is.null(prj_data)) prj_data else 'dummy.dat',
