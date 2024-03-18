@@ -1,3 +1,13 @@
+#' Load the example GCAM project
+#' @title get_example_prj
+#' @export
+get_example_prj <- function() {
+  prj <- rgcam::loadProject(file.path("www","input","example_prj","example_ssp.dat"))
+  return(prj)
+}
+
+
+
 #' Upload the xml queries
 #' @title get_queries
 #' @export

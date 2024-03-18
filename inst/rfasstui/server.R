@@ -28,6 +28,12 @@ globalCapabilities <- get_globalCapabilities()
 #' @export
 globalQueries <- get_queries()
 
+# Example GCAM project
+#' @details \code{globalExamplePrj}: GCAM project with the SSPs
+#' @rdname constants
+#' @export
+globalExamplePrj <- get_example_prj()
+
 
 #' Main server/data processing function
 #'
@@ -102,7 +108,6 @@ server <- function(input, output, session)
     if (!is.null(active_fig_tab())) {
       if (active_fig_tab() == "Scenario Output") fig_tab <<- "scenario.output"
       if (active_fig_tab() == "World Maps") fig_tab <<- "world.maps"
-      print(scen_tab)
     } else fig_tab <<- NULL
   })
 
@@ -119,14 +124,8 @@ server <- function(input, output, session)
   })
   observeEvent(active_scen_tab(), {
     if (!is.null(active_scen_tab())) {
-      if (active_scen_tab() == "Standard Scenarios") {
-        scen_tab <<- "standard.scenarios"
-        # Render scenario selector
-        output$customScenarioSelector1 <- renderUI({ NULL })
-        output$customScenarioSelectors <- renderUI({ NULL })
-      }
+      if (active_scen_tab() == "Standard Scenarios") scen_tab <<- "standard.scenarios"
       else if (active_scen_tab() == "Custom Scenarios") scen_tab <<- "custom.scenarios"
-      print(scen_tab)
     } else scen_tab <<- NULL
   })
 

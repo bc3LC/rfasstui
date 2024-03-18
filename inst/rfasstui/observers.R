@@ -15,8 +15,6 @@ setGraphCapabilities <- function()
     {
       outputVariables <<- input$graphVar
       if (length(outputVariables) < 4) cleanPlots()
-      print(paste0('in set capabilities: ', outputVariables))
-      # loadGraph()
     },
     error = function(err)
     {
@@ -102,7 +100,6 @@ loadCustomProject <- function() {
   print("in load custom")
 
   customPrj <- input$input_custom_gcam_project
-  print(customPrj)
 
   all_ok <- TRUE
   # Avoid loading the project if it is currently loaded
@@ -150,7 +147,6 @@ loadCustomProject <- function() {
          })
       loaded_prj <<- prj
       loaded_prj[['data']] <<- customPrj
-      print(loaded_prj[['data']])
     },
     warning = function(war)
     {
@@ -172,7 +168,7 @@ loadCustomProject <- function() {
   output$customScenarioSelector1 <- renderUI({
     if (all_ok) {
       selectInput(
-        inputId = "customScenMapSel",
+        inputId = "customScenMapSel1",
         label = "Select Scenarios:",
         choices = sort(rgcam::listScenarios(prj), decreasing = F),
         width = "400px",
@@ -186,7 +182,7 @@ loadCustomProject <- function() {
   output$customScenarioSelector2 <- renderUI({
     if (all_ok) {
       selectInput(
-        inputId = "customScenMapSel",
+        inputId = "customScenMapSel2",
         label = "Select Scenarios:",
         choices = sort(rgcam::listScenarios(prj), decreasing = F),
         width = "400px",
