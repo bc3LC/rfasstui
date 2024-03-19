@@ -17,7 +17,7 @@ fluidPage(theme = shinythemes::shinytheme("readable"),
           shinyjs::useShinyjs(),
 
           tags$div(class = "container",
-                   tags$img(src = "images/sky.png", height = "500px", width = "150%", class = "earth", alt = "Earth's atmosphere"),
+                   tags$img(src = "images/sky.png", height = "500px", width = "100%", class = "earth", alt = "Earth's atmosphere"),
                    tags$div(
                      a(
                        img(src = "images/bc3_logo.png", class = "logo"), href = "https://www.bc3research.org/", target = "_blank"),
@@ -38,9 +38,9 @@ fluidPage(theme = shinythemes::shinytheme("readable"),
               fluidRow(column(7, div(class = "home-text",
                                      p("Welcome to the user interface for",
                                        tags$b("rfasst:"),
-                                       " an open source, Lorem ipsum dolor sit amet consectetur adipiscing, elit class lacus libero ridiculus,
-                                       natoque torquent augue posuere nunc. Nostra iaculis metus scelerisque magna massa hac fusce, posuere
-                                       hendrerit bibendum venenatis senectus habitant nec vestibulum, sociosqu montes auctor viverra cursus nullam.", style = "float:left"),
+                                       " an open source air pollution model. It runs instantanusely and is designed to explore the future human health impacts,
+                                       agricultural damages, and economic losses attributable to air pollution using scenario outputs from the Global Change Analysis Model (GCAM).",
+                                       style = "float:left"),
                                      p("This interactive version is built upon previous work including the development of the initial ",
                                        a("rfasst R Package", href="https://github.com/bc3LC/rfasst/", target="blank"), "."),
                                        style = "float: left"
@@ -73,7 +73,7 @@ fluidPage(theme = shinythemes::shinytheme("readable"),
                     p(icon("youtube", "fa-1x"), "rfasst Tutorial", value="videoTab"),
                     style="vertical-align: middle;",
                     h4("Ready to get started?",
-                      tags$a("View the Guide/Tutorial", href="", target="blank")), # TODO add link to youtube tutorial
+                      tags$a("View the Guide/Tutorial", href="https://bc3lc.github.io/rfasstui/articles/tutorial.html", target="blank")), # link to tutorial
                     tags$hr(class="hrNav"),
                     br(),
                     HTML('<iframe width="560" height="315" src="https://www.youtube.com/embed/fBHXS7pjZcI" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>')
@@ -242,7 +242,7 @@ fluidPage(theme = shinythemes::shinytheme("readable"),
                     ),
                     uiOutput("customScenarioSelector2"),
                     actionButton(inputId="loadMaps", label="Load Map", width = 150, style = "background: #0B3F8F; color: white;"),
-                    downloadButton("downloadMap", label="Save Hi-Res Map", width = 150),
+                    downloadButton("downloadMap", label="Download Map", width = 150),
                     br(),
                     uiOutput("maps", class = "customPlot")
                   ) # End Maps Tab

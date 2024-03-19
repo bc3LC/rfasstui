@@ -8,3 +8,4 @@ inst/rfasstui/output*
 
 # extra files
 *extra*
+inst/doc

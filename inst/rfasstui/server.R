@@ -214,17 +214,12 @@ server <- function(input, output, session)
     contentType = "application/zip"
   )
 
-  # # Renders feedback form
-  # output$feedbackFrame <- renderUI({
-  #   frame_link <- tags$iframe(src="https://docs.google.com/forms/", # ADD google FORM
-  #                             height=1100, width=700, seamless=NA)
-  #   frame_link
-  # })
-  #
-  # toggleCustom <- function()
-  # {
-  #   shinyjs::disable("input_enableCustom")
-  # }
+  # Renders feedback form
+  output$feedbackFrame <- renderUI({
+    frame_link <- tags$iframe(src="https://forms.gle/FL9eM1QRCrdmxn3Y7", # google FORM
+                              height=1100, width=700, seamless=NA)
+    frame_link
+  })
 
 }
 

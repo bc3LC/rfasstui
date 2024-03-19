@@ -1,26 +1,19 @@
 title: rfasstui
+url: https://bc3lc.github.io/gcamreport/
+
 
 navbar:
-  type: inverse
+  structure:
+    left:  [intro, tutorial]
+    right: [search, github]
+
   left:
     - icon: fa-home
       href: index.html
-    - text: "Tab1"
+    - text: "Tutorial"
       icon: fas fa-book
-      menu:
-      -  text: text for newVignetteName1
-         href: articles/newVignetteName1.html
-      -  text: text for newVignetteName2
-         href: articles/newVignetteName2.html
-    - icon: fas fa-anchor
-      text: "Tab2"
-      href: articles/newVignetteName3.html
-    - icon: fa-file-code-o
-      text: "Reference"
-      href: reference/index.html
-    - icon: fa-newspaper-o
-      text: "News"
-      href: news/index.html
+      href: articles/tutorial.html
+  right:
+    - icon: fa-github fa-lg
+      href: https://github.com/bc3LC/rfasstui
 
-toc:
-  depth: 2
