@@ -3,7 +3,7 @@ pkgdown: 2.0.7
 pkgdown_sha: ~
 articles:
   tutorial: tutorial.html
-last_built: 2024-03-19T14:44Z
+last_built: 2024-03-19T14:50Z
 urls:
   reference: https://bc3lc.github.io/gcamreport/reference
   article: https://bc3lc.github.io/gcamreport/articles
