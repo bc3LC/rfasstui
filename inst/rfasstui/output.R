@@ -122,10 +122,9 @@ loadGraph <- function()
                                    df_total <- data.frame()
 
                                    # Display all the considered scenarios
-                                   df_total <- computeOutput(prj = prj, variable = outputVariables[[i]]) %>%
-                                     dplyr::filter(scenario %in% sel_scen)
+                                   df_total <- computeOutput(prj = prj, variable = outputVariables[[i]],
+                                                             scen = sel_scen)
 
-                                   save(df_total, file = 'df_total.RData')
                                    # Get the units for graph axis
                                    x <- dplyr::distinct(df_total, units)
                                    if (grepl('agriculture', outputVariables[[i]])) {
@@ -266,8 +265,8 @@ loadGraph <- function()
                                    df_total <- data.frame()
 
                                    # Display all the considered scenarios
-                                   df_total <- computeOutput(prj = prj, variable = outputVariables[[i]]) %>%
-                                     dplyr::filter(scenario %in% sel_scen) %>%
+                                   df_total <- computeOutput(prj = prj, variable = outputVariables[[i]],
+                                                             scen = sel_scen) %>%
                                      dplyr::filter(year <= max_year)
 
                                    # Get the units for graph axis
@@ -345,7 +344,6 @@ loadGraph <- function()
 loadMap <- function()
 {
   print('in load map')
-  print(scen_tab)
 
   if (!is.null(scen_tab)) {
     ############################################################################
@@ -398,11 +396,12 @@ loadMap <- function()
                               map_year <- ifelse(user_year == 2000, 2005, user_year)
 
                               # Compute dataset to be plotted. Skip the computation if it was the last one performed (and only the year has changed)
-                              if (length(last_map) > 0 && last_map[[1]] == paste0('st.scen','_',outputVariables[[1]])) {
+                              if (length(last_map) > 0 && last_map[[1]] == paste0('st.scen','_',outputVariables[[1]],'_',paste(sel_scen,collapse = '_'))) {
                                 df_total = last_map[[1]]$data
                               } else {
-                                df_total <- computeOutput(prj = prj, variable = outputVariables[[1]], regional = TRUE)
-                                last_map[[1]] <<- paste0('st.scen','_',outputVariables[[1]])
+                                df_total <- computeOutput(prj = prj, variable = outputVariables[[1]],
+                                                          scen = sel_scen, regional = TRUE)
+                                last_map[[1]] <<- paste0('st.scen','_',outputVariables[[1]],'_',paste(sel_scen,collapse = '_'))
                                 last_map[[1]]$data <<- df_total
                               }
 
@@ -411,8 +410,8 @@ loadMap <- function()
                               # choose 2000, we print 2005 instead
                               incProgress(2/3, detail = paste("Loading Map...\n"))
                               mapFigure <- computeMap(df_total%>%
-                                                        dplyr::filter(year == map_year) %>%
-                                                        dplyr::filter(scenario %in% sel_scen),
+                                                        dplyr::filter(year == map_year,
+                                                                      scenario %in% sel_scen),
                                                       outputVariables[[1]],
                                                       paste0(attr(globalCapabilities[[outputVariables[[1]]]], 'longName'), ', ', user_year,
                                                              if(length(sel_scen) == 1) paste0(" - ", sel_scen) else ""))
@@ -492,13 +491,14 @@ loadMap <- function()
                               sel_scen <- input$customScenMapSel2
 
                               # Compute dataset to be plotted. Skip the computation if it was the last one performed (and only the year has changed)
-                              if (length(last_map) > 0 && last_map[[1]] == paste0(prj$data$name,'_',outputVariables[[1]])) {
+                              if (length(last_map) > 0 && last_map[[1]] == paste0(prj$data$name,'_',outputVariables[[1]],'_',paste(sel_scen,collapse = '_'))) {
                                 print('reload map')
                                 df_total = last_map[[1]]$data
                               } else {
                                 print('load map')
-                                df_total <- computeOutput(prj = prj, variable = outputVariables[[1]], regional = TRUE)
-                                last_map[[1]] <<- paste0(prj$data$name,'_',outputVariables[[1]])
+                                df_total <- computeOutput(prj = prj, variable = outputVariables[[1]],
+                                                          scen = sel_scen, regional = TRUE)
+                                last_map[[1]] <<- paste0(prj$data$name,'_',outputVariables[[1]],'_',paste(sel_scen,collapse = '_'))
                                 last_map[[1]]$data <<- df_total
                               }
 

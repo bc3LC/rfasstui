@@ -1,0 +1,10 @@
+name: rfasstui
+title: rfasstUI
+username: bc3lc
+account: bc3lc
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 11517388
+bundleId:
+url: https://bc3lc.shinyapps.io/rfasstui/
+version: 1

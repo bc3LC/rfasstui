@@ -9,10 +9,8 @@ License: BLD-2
 Encoding: UTF-8
 LazyData: true
 Imports:
-    remotes,
     shiny,
     shinyjs,
-    devtools,
     dplyr,
     ggplot2,
     shinyalert,
@@ -21,15 +19,18 @@ Imports:
     shinyWidgets,
     stringr,
     shinycustomloader,
-    markdown
+    markdown,
+    xml2
 Depends:
-    R (>= 3.6.0),
-    rfasst
+    R (>= 3.6.0)
 Suggests:
     testthat (>= 2.1.0),
     knitr,
     rmarkdown,
     pkgdown
 Remotes:
-RoxygenNote: 7.2.3
+    github::bc3LC/rfasst@dev_k,
+    github::JGCRI/rgcam,
+    github::JGCRI/rmap
+RoxygenNote: 7.3.1
 VignetteBuilder: knitr

@@ -10,7 +10,7 @@ data_query(
   prj_name,
   scenarios,
   query_path,
-  queries_file = "queries_rfasst_nonCO2.xml"
+  query_file = "queries_rfasst_nonCO2.xml"
 )
 }
 \arguments{

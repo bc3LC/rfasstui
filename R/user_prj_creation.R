@@ -10,8 +10,8 @@
 #' @return dataframe with the data from the query
 #' @export
 data_query = function(db_path, db_name, prj_name, scenarios, query_path,
-                      queries_file = 'queries_rfasst_nonCO2.xml') {
-  dt = data.frame()
+                      query_file = 'queries_rfasst_nonCO2.xml') {
+  dt <- data.frame()
   xml <- xml2::read_xml(file.path(query_path,query_file))
   qq <- xml2::xml_find_first(xml, paste0("//*[@title='", type, "']"))
 

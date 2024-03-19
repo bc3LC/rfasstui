@@ -126,25 +126,22 @@ computeMap <- function(map_data, variable, map_title) {
 #' health_deaths_pm25, health_deaths_o3, health_deaths_total,
 #' agricultural_rel_yield_loss, TODO
 #' economic_vsl TODO
+#' @param scen vecotr of the scenario names to be considered
 #' @param regional TRUE if dataset grouped by region, FALSE if only the World region is considered
 #' @return dataset
 #' @importFrom magrittr %>%
 #' @export
-computeOutput <- function(prj_data = NULL, prj = NULL, variable, regional = FALSE)
+computeOutput <- function(prj_data = NULL, prj = NULL, variable, scen, regional = FALSE)
 {
   print('in compute output')
 
   if (!is.null(prj_data)) {
     prj_name <- names(prj_data)
     prj_path <- prj_data[[prj_name]]$path
-    prj_scenario <- prj_data[[prj_name]]$scenario
     prj <- rgcam::loadProject(prj_path)
-    scen <- rgcam::listScenarios(prj)
     max_year <- max(prj[[scen[1]]][['ag production by crop type']][['year']])
     # if scenarios where selected, (in the case of the SSP example prj), plot only this ones
-    if (!is.null(prj_scenario)) scen <- prj_scenario
   } else {
-    scen <- rgcam::listScenarios(prj)
     # remote "data" from the scenario list
     scen <- scen[!grepl("data", scen)]
     max_year <- max(prj[[scen[1]]][['ag production by crop type']][['year']])
@@ -158,7 +155,8 @@ computeOutput <- function(prj_data = NULL, prj = NULL, variable, regional = FALS
                                    final_db_year = max_year,
                                    scen_name = sc,
                                    saveOutput = F,
-                                   map = F, anim = F)) %>%
+                                   map = F, anim = F,
+                                   recompute = T)) %>%
         dplyr::mutate(scenario = sc) %>%
         dplyr::mutate(units = 'Gg') %>%
         dplyr::rowwise() %>%
@@ -194,7 +192,8 @@ computeOutput <- function(prj_data = NULL, prj = NULL, variable, regional = FALS
                                final_db_year = max_year,
                                scen_name = sc,
                                saveOutput = F,
-                               map = F, anim = F) %>%
+                               map = F, anim = F,
+                               recompute = T) %>%
         dplyr::mutate(scenario = sc) %>%
         dplyr::rowwise() %>%
         dplyr::mutate(region = dplyr::if_else(regional, region, 'dummy_reg')) %>%
@@ -220,7 +219,8 @@ computeOutput <- function(prj_data = NULL, prj = NULL, variable, regional = FALS
                              final_db_year = max_year,
                              scen_name = sc,
                              saveOutput = F,
-                             map = F, anim = F) %>%
+                             map = F, anim = F,
+                             recompute = T) %>%
         dplyr::mutate(scenario = sc) %>%
         dplyr::rowwise() %>%
         dplyr::mutate(region = ifelse(regional, region, 'dummy_reg')) %>%
@@ -246,7 +246,8 @@ computeOutput <- function(prj_data = NULL, prj = NULL, variable, regional = FALS
                                final_db_year = max_year,
                                scen_name = sc,
                                saveOutput = F,
-                               map = F, anim = F) %>%
+                               map = F, anim = F,
+                               recompute = T) %>%
         dplyr::mutate(scenario = sc) %>%
         dplyr::rowwise() %>%
         dplyr::mutate(region = ifelse(regional, region, 'dummy_reg')) %>%
@@ -272,7 +273,8 @@ computeOutput <- function(prj_data = NULL, prj = NULL, variable, regional = FALS
                              final_db_year = max_year,
                              scen_name = sc,
                              saveOutput = F,
-                             map = F, anim = F) %>%
+                             map = F, anim = F,
+                             recompute = T) %>%
         dplyr::mutate(scenario = sc) %>%
         dplyr::rowwise() %>%
         dplyr::mutate(region = ifelse(regional, region, 'dummy_reg')) %>%
@@ -299,7 +301,8 @@ computeOutput <- function(prj_data = NULL, prj = NULL, variable, regional = FALS
                                  final_db_year = max_year,
                                  scen_name = sc,
                                  saveOutput = F,
-                                 map = F, anim = F) %>%
+                                 map = F, anim = F,
+                                 recompute = T) %>%
           dplyr::mutate(scenario = sc) %>%
           dplyr::rowwise() %>%
           dplyr::mutate(region = ifelse(regional, region, 'dummy_reg')) %>%
@@ -311,7 +314,8 @@ computeOutput <- function(prj_data = NULL, prj = NULL, variable, regional = FALS
                                final_db_year = max_year,
                                scen_name = sc,
                                saveOutput = F,
-                               map = F, anim = F) %>%
+                               map = F, anim = F,
+                               recompute = F) %>%
           dplyr::mutate(scenario = sc) %>%
           dplyr::rowwise() %>%
           dplyr::mutate(region = ifelse(regional, region, 'dummy_reg')) %>%
@@ -343,7 +347,8 @@ computeOutput <- function(prj_data = NULL, prj = NULL, variable, regional = FALS
                             final_db_year = max_year,
                             scen_name = sc,
                             saveOutput = F,
-                            map = F, anim = F) %>%
+                            map = F, anim = F,
+                            recompute = T) %>%
         dplyr::mutate(scenario = sc) %>%
         dplyr::rename(units = unit) %>%
         dplyr::rowwise() %>%
@@ -371,7 +376,8 @@ computeOutput <- function(prj_data = NULL, prj = NULL, variable, regional = FALS
                                final_db_year = max_year,
                                scen_name = sc,
                                saveOutput = F,
-                               map = F, anim = F) %>%
+                               map = F, anim = F,
+                               recompute = T) %>%
         dplyr::mutate(scenario = sc) %>%
         dplyr::rename(units = unit) %>%
         dplyr::rowwise() %>%
@@ -399,7 +405,8 @@ computeOutput <- function(prj_data = NULL, prj = NULL, variable, regional = FALS
                               final_db_year = max_year,
                               scen_name = sc,
                               saveOutput = F,
-                              map = F, anim = F) %>%
+                              map = F, anim = F,
+                              recompute = T) %>%
         dplyr::mutate(scenario = sc) %>%
         dplyr::rename(units = unit) %>%
         dplyr::rowwise() %>%

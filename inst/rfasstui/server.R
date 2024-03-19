@@ -1,8 +1,7 @@
 # This file is the application controller
-setwd("~/GitHub/rfasstui/inst/rfasstui")
 options(shiny.maxRequestSize=30*1024^2)
-library(rfasstui)
 library(rfasst)
+library(rfasstui)
 
 # Global vars for scale colors for SSP scenarios
 #' @details \code{globalColorScales}: Scale colors for SSP scenarios
