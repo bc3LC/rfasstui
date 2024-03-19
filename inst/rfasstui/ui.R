@@ -278,9 +278,9 @@ fluidPage(theme = shinythemes::shinytheme("readable"),
                     br(),
                     tags$td(
                       tags$figure(
-                        img(src='https://github.com/bc3LC/rfasst/blob/main/vignettes/vignetteFigs/PM2.5_concentration_2050.png',
+                        img(src='images/rfasst_map_concentration_pm25.png',
                             height="260px"),
-                        tags$figcaption("rfasst's global PM25 concentrations for SSP XXX in 2050")
+                        tags$figcaption("rfasst's global PM25 concentrations for SSP-2 in 2030")
                       ), style="text-align: center"
                     ),
                     br(),
