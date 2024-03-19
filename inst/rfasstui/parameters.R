@@ -100,7 +100,7 @@ computeMap <- function(map_data, variable, map_title) {
       dplyr::filter(subRegion != "RUE") %>%
       dplyr::mutate(year = as.numeric(as.character(year)))
 
-    map_figure <- rmap::map(data = ag.ryl.map,
+    map_figure <- rmap::map(data = ag.map,
                   shape = fasstSubset,
                   ncol = 2,
                   legendType = "pretty",
