@@ -39,18 +39,23 @@ jobs:
         run: |
           install.packages(c("remotes","rcmdcheck","covr"), repos = "https://cloud.r-project.org")
           remotes::install_github("JGCRI/rpackageutils")
-          remotes::install_github("bc3LC/rfasst")
+          remotes::install_github("bc3LC/rfasst@dev_k")
           remotes::install_deps(dependencies = TRUE)
         shell: Rscript {0}
 
-      - name: Test coverage
-        run: |
-          cov <- covr::package_coverage()
-          covr:::report(cov, file = "coverage.xml")
-        shell: Rscript {0}
-
-      - uses: codecov/codecov-action@v3
+      # - name: Test coverage
+      #   run: |
+      #     cov <- covr::package_coverage()
+      #     covr:::report(cov, file = "coverage.xml")
+      #   shell: Rscript {0}
+      #
+      # - uses: codecov/codecov-action@v3
+      #   with:
+      #     token: ${{secrets.CODECOV_TOKEN}}
+      #     files: ./coverage.xml
+      #     verbose: true
+      - name: Upload coverage reports to Codecov
+        uses: codecov/codecov-action@v4.0.1
         with:
-          token: ${{secrets.CODECOV_TOKEN}}
-          files: ./coverage.xml
-          verbose: true
+          token: ${{ secrets.CODECOV_TOKEN }}
+          slug: bc3LC/rfasstui
