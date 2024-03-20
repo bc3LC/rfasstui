@@ -103,10 +103,6 @@ get_globalCapabilities <- function() {
   globalCapabilities[['agriculture_rev_loss']] <- 'agriculture_rev_loss'
   attr(globalCapabilities[['agriculture_rev_loss']], 'longName') <- "Agriculture revenue loss"
 
-  # # "Economic impacts" TODO
-  # globalCapabilities[['economy']] <- c('VSL')
-  # attr(globalCapabilities[['economy']], 'longName') <- "Economic imipacts"
-
 
   return(globalCapabilities)
 }

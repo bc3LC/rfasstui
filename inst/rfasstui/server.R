@@ -183,11 +183,11 @@ server <- function(input, output, session)
 
 
     # Add nonCO2 query manually (it is too big to use the usual method)
-    prj <- rfasstui::fill_queries(prj, db_path, db_name, prj_name, scen_name,
-                                  query_path, query_file)
+    prj <- rfasst::fill_queries(prj, db_path, db_name, prj_name, scenarios,
+                                query_path, queries = 'queries_rfasst_nonCO2.xml')
 
     # Save the project
-    rgcam::saveProject(prj, file = file.path('output',prj_name))")
+    rgcam::saveProject(prj, file = prj_name)")
   })
 
 
