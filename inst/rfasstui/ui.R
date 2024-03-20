@@ -76,7 +76,10 @@ fluidPage(theme = shinythemes::shinytheme("readable"),
                       tags$a("View the Guide/Tutorial", href="https://bc3lc.github.io/rfasstui/articles/tutorial.html", target="blank")), # link to tutorial
                     tags$hr(class="hrNav"),
                     br(),
-                    HTML('<iframe width="560" height="315" src="https://www.youtube.com/embed/fBHXS7pjZcI" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>')
+                    tags$video(src = "input/rfasstui_tutorial.mp4",
+                               type = "video/mp4",
+                               width = "560px", height = "315px",
+                               controls = "controls")
                   ),
 
                   # Project creation pannel
@@ -159,7 +162,7 @@ fluidPage(theme = shinythemes::shinytheme("readable"),
                         tags$li("Download ", tags$a(href = "https://github.com/JGCRI/gcam-core", "GCAM")),
                         tags$li("Run your GCAM scenario/s"),
                         tags$li("Create your ", tags$a(href = "https://github.com/JGCRI/rgcam", "rgcam"), " project with the example queries below."),
-                        tags$li(class = "no-number", "Detailed step-by-step here") # TODO: add link
+                        tags$li(class = "no-number", tags$a(href = "https://bc3lc.shinyapps.io/rfasstui/#:~:text=How%20to%20create%20an%20rgcam%20project%20suitable%20for%20rfasst", "Detailed step-by-step here"))
                       ),
                       div(
                         downloadButton("downloadQueries", label = "Download queries file", icon = icon("download"))
