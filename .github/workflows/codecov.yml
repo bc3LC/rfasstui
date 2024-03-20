@@ -43,19 +43,14 @@ jobs:
           remotes::install_deps(dependencies = TRUE)
         shell: Rscript {0}
 
-      # - name: Test coverage
-      #   run: |
-      #     cov <- covr::package_coverage()
-      #     covr:::report(cov, file = "coverage.xml")
-      #   shell: Rscript {0}
-      #
-      # - uses: codecov/codecov-action@v3
-      #   with:
-      #     token: ${{secrets.CODECOV_TOKEN}}
-      #     files: ./coverage.xml
-      #     verbose: true
-      - name: Upload coverage reports to Codecov
-        uses: codecov/codecov-action@v4.0.1
+      - name: Test coverage
+        run: |
+          cov <- covr::package_coverage()
+          covr:::report(cov, file = "coverage.xml")
+        shell: Rscript {0}
+
+      - uses: codecov/codecov-action@v3
         with:
-          token: ${{ secrets.CODECOV_TOKEN }}
-          slug: bc3LC/rfasstui
+          # token: ${{secrets.CODECOV_TOKEN}}
+          files: ./coverage.xml
+          verbose: true

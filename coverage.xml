@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE coverage SYSTEM "https://raw.githubusercontent.com/cobertura/cobertura/master/cobertura/src/site/htdocs/xml/coverage-04.dtd">
+<coverage line-rate="1" branch-rate="0" lines-covered="45" lines-valid="45" branches-covered="0" branches-valid="0" complexity="0" version="3.6.4" timestamp="2024-03-20 15:48:21">
+  <sources>
+    <source>C:/Users/claudia.rodes/Documents/GitHub/rfasstui</source>
+  </sources>
+  <packages>
+    <package name="rfasstui" line-rate="1" branch-rate="0" complexity="0">
+      <classes>
+        <class name="set_globals.R" filename="R/set_globals.R" line-rate="1" branch-rate="0" complexity="0">
+          <methods>
+            <method name="get_example_prj" signature="" line-rate="1" branch-rate="0" complexity="0">
+              <lines>
+                <line number="5" hits="1" branch="false"/>
+                <line number="6" hits="1" branch="false"/>
+              </lines>
+            </method>
+            <method name="get_queries" signature="" line-rate="1" branch-rate="0" complexity="0">
+              <lines>
+                <line number="15" hits="1" branch="false"/>
+                <line number="16" hits="1" branch="false"/>
+                <line number="18" hits="1" branch="false"/>
+                <line number="19" hits="1" branch="false"/>
+                <line number="20" hits="1" branch="false"/>
+                <line number="22" hits="1" branch="false"/>
+              </lines>
+            </method>
+            <method name="get_globalSSPColorScales" signature="" line-rate="1" branch-rate="0" complexity="0">
+              <lines>
+                <line number="32" hits="1" branch="false"/>
+                <line number="33" hits="1" branch="false"/>
+                <line number="34" hits="1" branch="false"/>
+                <line number="36" hits="1" branch="false"/>
+              </lines>
+            </method>
+            <method name="get_globalCustomColorScales" signature="" line-rate="1" branch-rate="0" complexity="0">
+              <lines>
+                <line number="46" hits="1" branch="false"/>
+                <line number="47" hits="1" branch="false"/>
+                <line number="49" hits="1" branch="false"/>
+              </lines>
+            </method>
+            <method name="get_globalCapabilities" signature="" line-rate="1" branch-rate="0" complexity="0">
+              <lines>
+                <line number="58" hits="1" branch="false"/>
+                <line number="61" hits="1" branch="false"/>
+                <line number="62" hits="1" branch="false"/>
+                <line number="64" hits="1" branch="false"/>
+                <line number="65" hits="1" branch="false"/>
+                <line number="67" hits="1" branch="false"/>
+                <line number="68" hits="1" branch="false"/>
+                <line number="70" hits="1" branch="false"/>
+                <line number="71" hits="1" branch="false"/>
+                <line number="73" hits="1" branch="false"/>
+                <line number="74" hits="1" branch="false"/>
+                <line number="76" hits="1" branch="false"/>
+                <line number="77" hits="1" branch="false"/>
+                <line number="80" hits="1" branch="false"/>
+                <line number="81" hits="1" branch="false"/>
+                <line number="83" hits="1" branch="false"/>
+                <line number="84" hits="1" branch="false"/>
+                <line number="87" hits="1" branch="false"/>
+                <line number="88" hits="1" branch="false"/>
+                <line number="90" hits="1" branch="false"/>
+                <line number="91" hits="1" branch="false"/>
+                <line number="93" hits="1" branch="false"/>
+                <line number="94" hits="1" branch="false"/>
+                <line number="97" hits="1" branch="false"/>
+                <line number="98" hits="1" branch="false"/>
+                <line number="100" hits="1" branch="false"/>
+                <line number="101" hits="1" branch="false"/>
+                <line number="103" hits="1" branch="false"/>
+                <line number="104" hits="1" branch="false"/>
+                <line number="107" hits="1" branch="false"/>
+              </lines>
+            </method>
+          </methods>
+          <lines>
+            <line number="5" hits="1" branch="false"/>
+            <line number="6" hits="1" branch="false"/>
+            <line number="15" hits="1" branch="false"/>
+            <line number="16" hits="1" branch="false"/>
+            <line number="18" hits="1" branch="false"/>
+            <line number="19" hits="1" branch="false"/>
+            <line number="20" hits="1" branch="false"/>
+            <line number="22" hits="1" branch="false"/>
+            <line number="32" hits="1" branch="false"/>
+            <line number="33" hits="1" branch="false"/>
+            <line number="34" hits="1" branch="false"/>
+            <line number="36" hits="1" branch="false"/>
+            <line number="46" hits="1" branch="false"/>
+            <line number="47" hits="1" branch="false"/>
+            <line number="49" hits="1" branch="false"/>
+            <line number="58" hits="1" branch="false"/>
+            <line number="61" hits="1" branch="false"/>
+            <line number="62" hits="1" branch="false"/>
+            <line number="64" hits="1" branch="false"/>
+            <line number="65" hits="1" branch="false"/>
+            <line number="67" hits="1" branch="false"/>
+            <line number="68" hits="1" branch="false"/>
+            <line number="70" hits="1" branch="false"/>
+            <line number="71" hits="1" branch="false"/>
+            <line number="73" hits="1" branch="false"/>
+            <line number="74" hits="1" branch="false"/>
+            <line number="76" hits="1" branch="false"/>
+            <line number="77" hits="1" branch="false"/>
+            <line number="80" hits="1" branch="false"/>
+            <line number="81" hits="1" branch="false"/>
+            <line number="83" hits="1" branch="false"/>
+            <line number="84" hits="1" branch="false"/>
+            <line number="87" hits="1" branch="false"/>
+            <line number="88" hits="1" branch="false"/>
+            <line number="90" hits="1" branch="false"/>
+            <line number="91" hits="1" branch="false"/>
+            <line number="93" hits="1" branch="false"/>
+            <line number="94" hits="1" branch="false"/>
+            <line number="97" hits="1" branch="false"/>
+            <line number="98" hits="1" branch="false"/>
+            <line number="100" hits="1" branch="false"/>
+            <line number="101" hits="1" branch="false"/>
+            <line number="103" hits="1" branch="false"/>
+            <line number="104" hits="1" branch="false"/>
+            <line number="107" hits="1" branch="false"/>
+          </lines>
+        </class>
+      </classes>
+    </package>
+  </packages>
+</coverage>
