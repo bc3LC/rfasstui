@@ -1,6 +1,9 @@
 [![Project Status: Active – The project has reached a stable, usable state and is being actively developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
 [![docs](https://github.com/bc3LC/rfasstui/actions/workflows/docs.yml/badge.svg)](https://github.com/bc3LC/rfasstui/actions/workflows/docs.yml)
-
+[![build](https://github.com/bc3LC/rfasstui/actions/workflows/build.yml/badge.svg)](https://github.com/bc3LC/rfasstui/actions/workflows/build.yml)
+[![test_coverage](https://github.com/bc3LC/rfasstui/actions/workflows/codecov.yml/badge.svg)](https://github.com/bc3LC/rfasstui/actions/workflows/codecov.yml)
+[![codecov](https://codecov.io/gh/bc3LC/rfasstui/graph/badge.svg?token=3xNqR5mzuY)](https://codecov.io/gh/bc3LC/rfasstui)
+[![pages](https://github.com/bc3LC/rfasstui/actions/workflows/pages/pages-build-deployment/badge.svg)](https://github.com/bc3LC/rfasstui/actions/workflows/pages/pages-build-deployment)
 
 #  rfasstUI
 
