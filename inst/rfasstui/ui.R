@@ -16,6 +16,8 @@ fluidPage(theme = shinythemes::shinytheme("readable"),
             tags$meta(name = "keywords", content = "shiny, R, data visualization, SSPs, rfasst, air pollution, health, agriculture,
                       economy, damages, impacts, climate change, ui, user interface, bc3, bc3lc")
           ),
+          tags$head(includeHTML("google-analytics.html")),
+
           shinyjs::useShinyjs(),
 
           tags$div(class = "container",
