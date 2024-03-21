@@ -12,7 +12,9 @@ fluidPage(theme = shinythemes::shinytheme("readable"),
           # Loads the custom.css file that contains custom styles and overwrites some built in styles
           tags$head
           (
-            tags$link(rel = "stylesheet", type = "text/css", href = "style.css")
+            tags$link(rel = "stylesheet", type = "text/css", href = "style.css"),
+            tags$meta(name = "keywords", content = "shiny, R, data visualization, SSPs, rfasst, air pollution, health, agriculture,
+                      economy, damages, impacts, climate change, ui, user interface, bc3, bc3lc")
           ),
           shinyjs::useShinyjs(),
 
