@@ -5,6 +5,6 @@ account: bc3lc
 server: shinyapps.io
 hostUrl: https://api.shinyapps.io/v1
 appId: 11517388
-bundleId: 8399616
+bundleId: 8414342
 url: https://bc3lc.shinyapps.io/rfasstui/
 version: 1
