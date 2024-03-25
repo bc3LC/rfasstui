@@ -7,7 +7,7 @@
 
 #  rfasstUI
 
-A web-based interactive scenario builder and visualization application for the rfasst air pollution model
+A web-based interactive scenario builder and visualization application for the [rfasst](https://github.com/bc3LC/rfasst)^1 air pollution model, an R version of the air quality reduced-form model [TM5-FASST](https://acp.copernicus.org/articles/18/16173/2018/)^2.
 
 ## Using `rfasstui`
 
@@ -50,9 +50,9 @@ collaborate!
 
 For more information about contributing, please contact Clàudia Rodés-Bachs at claudia.rodes@bc3research.org or Jon Sampedro at jon.sampedro@bc3research.org
 
-## Learn More About Rfasst
-Read more about the Rfasst air pollution model here:  [`rfasst` Documentation](https://bc3lc.github.io/rfasst/). `Rfasst` has been published in the following:
+## Learn More About rfasst
+Read more about the rfasst air pollution model here:  [`rfasst` Documentation](https://bc3lc.github.io/rfasst/), detailed in [Sampedro et al. 2022](https://doi.org/10.21105/joss.03820). It is an R version of the TM5-FASST model, detailed in [Van Dingenen et al. 2018](https://doi.org/10.5194/acp-18-16173-2018)
 
-```
-Sampedro et al., (2022). rfasst: An R tool to estimate air pollution impacts on health and agriculture. Journal of Open Source Software, 7(69), 3820, https://doi.org/10.21105/joss.03820
-```
+- Sampedro et al., (2022). "rfasst: An R tool to estimate air pollution impacts on health and agriculture." Journal of Open Source Software, 7(69), 3820, https://doi.org/10.21105/joss.03820
+
+- Van Dingenen, Rita, et al., (2018). "TM5-FASST: a global atmospheric source–receptor model for rapid impact analysis of emission changes on air quality and short-lived climate pollutants." Atmospheric Chemistry and Physics 18.21: 16173-16211.

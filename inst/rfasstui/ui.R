@@ -44,7 +44,9 @@ fluidPage(theme = shinythemes::shinytheme("readable"),
                                        agricultural damages, and economic losses attributable to air pollution using scenario outputs from the Global Change Analysis Model (GCAM).",
                                        style = "float:left"),
                                      p("This interactive version is built upon previous work including the development of the initial ",
-                                       a("rfasst R Package", href="https://github.com/bc3LC/rfasst/", target="blank"), "."),
+                                       a("rfasst R Package", href="https://github.com/bc3LC/rfasst/", target="blank"),
+                                       ", which replicates the calculations of the air quality reduced-form model ",
+                                       a("TM5-FASST", href="https://doi.org/10.5194/acp-18-16173-2018", target="blank")),
                                        style = "float: left"
               )),
               column(4, div(
@@ -293,12 +295,14 @@ fluidPage(theme = shinythemes::shinytheme("readable"),
                     h5("Documentation/Downloads"),
                     tags$hr(class="hrNav"),
                     p("The primary link to the rfasst model documentation is the ",
-                      a("online manual", href="https://jgcri.github.io/rfasst/index.html", target="blank"),
+                      a("online manual", href="https://bc3lc.github.io/rfasst/index.html", target="blank"),
                       ", which is included in the vignettes/manual directory. The code is also documented with ",
                       a("Doxygen-style", href="http://doxygen.org", target="blank"),
                       " comments."),
                     p("A formal model description paper via ",
-                      a("Sampedro et al. 2022", href="https://joss.theoj.org/papers/10.21105/joss.03820", target="blank")),
+                      a("Sampedro et al. 2022", href="https://joss.theoj.org/papers/10.21105/joss.03820", target="blank"),
+                      " and ",
+                      a("Van Dingenen et al. 2018.", href="https://doi.org/10.5194/acp-18-16173-2018", target="blank")),
                     tags$ul(
                       tags$li(
                         h5(tags$a("rfasst User Interface package download/source link ", href="https://github.com/bc3LC/rfasstui", target="blank"))),
@@ -306,9 +310,9 @@ fluidPage(theme = shinythemes::shinytheme("readable"),
                         h5(tags$a("rfasst R package download/source link", href="https://github.com/bc3LC/rfasst", target="blank"))),
                       tags$li(
                         h5(tags$a("Code and data for rfasst", href="https://zenodo.org/records/7417835", target="blank"),
-                           tags$img(src="https://zenodo.org/badge/DOI/10.5281/zenodo.344924589.svg", class="zenodo", alt="DOI")
-                        )
-                      )
+                           tags$img(src="https://zenodo.org/badge/DOI/10.5281/zenodo.344924589.svg", class="zenodo", alt="DOI"))),
+                      tags$li(
+                        h5(tags$a("Theorical description of TM5-FASST", href="https://doi.org/10.5194/acp-18-16173-2018", target="blank")))
                     ),
                     br(),
                     h5("Tools and software that work with rfasst"),
