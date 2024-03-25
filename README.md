@@ -4,10 +4,11 @@
 [![test_coverage](https://github.com/bc3LC/rfasstui/actions/workflows/codecov.yml/badge.svg)](https://github.com/bc3LC/rfasstui/actions/workflows/codecov.yml)
 [![codecov](https://codecov.io/gh/bc3LC/rfasstui/graph/badge.svg?token=3xNqR5mzuY)](https://codecov.io/gh/bc3LC/rfasstui)
 [![pages](https://github.com/bc3LC/rfasstui/actions/workflows/pages/pages-build-deployment/badge.svg)](https://github.com/bc3LC/rfasstui/actions/workflows/pages/pages-build-deployment)
+[![DOI](https://zenodo.org/badge/767573576.svg)](https://zenodo.org/doi/10.5281/zenodo.10868535)
 
 #  rfasstUI
 
-A web-based interactive scenario builder and visualization application for the [rfasst](https://github.com/bc3LC/rfasst)^1 air pollution model, an R version of the air quality reduced-form model [TM5-FASST](https://acp.copernicus.org/articles/18/16173/2018/)^2.
+A web-based interactive scenario builder and visualization application for the [rfasst](https://github.com/bc3LC/rfasst) air pollution model, an R version of the air quality reduced-form model [TM5-FASST](https://acp.copernicus.org/articles/18/16173/2018/).
 
 ## Using `rfasstui`
 

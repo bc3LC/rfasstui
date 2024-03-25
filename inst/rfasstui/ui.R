@@ -393,8 +393,8 @@ fluidPage(theme = shinythemes::shinytheme("readable"),
                         h5(tags$a("rfasst Core DOI", href="https://doi.org/10.5281/zenodo.7417835", target = "blank"),
                            tags$img(src="https://zenodo.org/badge/DOI/10.5281/zenodo.7417835.svg", alt="DOI", class = "imgNoPadding"))),
                       tags$li(
-                        h5(tags$a("rfasst User Interface DOI", href="https://doi.org/10.5281/zenodo.XXXXX", target = "blank"),
-                           tags$img(src="https://zenodo.org/badge/DOI/10.5281/zenodo.XXXXX.svg", alt="DOI", class = "imgNoPadding")))
+                        h5(tags$a("rfasst User Interface DOI", href="https://zenodo.org/doi/10.5281/zenodo.10868535", target = "blank"),
+                           tags$img(src="https://zenodo.org/badge/767573576.svg", alt="DOI", class = "imgNoPadding")))
                     )
                   ),
                   # Feedback Tab Panel
